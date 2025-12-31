@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ashik E A | Developer Portfolio</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">Ashik<span>.</span></div>
+
+    <!-- Desktop Nav -->
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="hire-btn">Hire Me</a>
+    </nav>
+
+    <!-- Mobile Menu Icon -->
+    <div class="menu-toggle" id="menuToggle">
+      ☰
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-header">
+    <div class="logo">Ashik<span>.</span></div>
+    <span class="close-btn" id="closeMenu">✕</span>
+  </div>
+
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#projects">Projects</a>
+  <a href="#education">Education</a>
+  <a href="#contact" class="active">Contact</a>
+
+  <a href="#contact" class="mobile-hire-btn">Hire Me</a>
+</div>
+
+
+  <!-- Hero -->
+<section class="hero">
+  <div class="hero-content reveal">
+
+    <img src="assets/profile.jpeg" alt="Ashik E A" class="profile-img"/>
+
+    <h1>Ashik E A</h1>
+    <h3>MCA Student | Django Developer | PHP | AI & Cybersecurity Curious</h3>
+    <p>Fresher | Actively seeking internships and entry-level roles</p>
+
+    <div class="cta">
+      <a href="#projects" class="btn primary">View Projects</a>
+      <a href="#contact" class="btn secondary">Contact Me</a>
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- About -->
+<section id="about" class="about-section">
+  <div class="about-container">
+
+    <h2 class="about-title reveal">About Me</h2>
+    <div class="about-underline reveal reveal-delay-1"></div>
+
+    <p class="about-description reveal reveal-delay-2">
+      MCA student with hands-on experience in web application development,
+      specializing in <strong>Django</strong> and <strong>PHP</strong>.
+      Passionate about building scalable backend systems, dashboards, and
+      data-driven applications. Currently exploring
+      <strong>AI/ML</strong> and <strong>Cybersecurity</strong>,
+      with a strong foundation in databases and backend logic.
+    </p>
+
+    <div class="about-cards">
+
+      <div class="about-card reveal reveal-delay-1">
+        <div class="about-icon">💾</div>
+        <h4>Backend Development</h4>
+      </div>
+
+      <div class="about-card reveal reveal-delay-2">
+        <div class="about-icon">🗄️</div>
+        <h4>Database Design</h4>
+      </div>
+
+      <div class="about-card reveal reveal-delay-3">
+        <div class="about-icon">&lt;/&gt;</div>
+        <h4>Web Applications</h4>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<section id="looking-for" class="looking-section">
+  <div class="looking-container">
+
+    <h2 class="looking-title">What I'm Looking For</h2>
+    <div class="looking-underline"></div>
+
+    <div class="looking-grid">
+
+      <!-- Target Roles -->
+      <div class="looking-card reveal reveal-delay-1">
+        <div class="card-header">
+          <span class="card-icon">🎯</span>
+          <h4>Target Roles</h4>
+        </div>
+        <ul>
+          <li>Django Developer (Fresher / Intern)</li>
+          <li>Backend Developer</li>
+          <li>Web Developer</li>
+          <li>AI/ML Intern</li>
+        </ul>
+      </div>
+
+      <!-- What I Bring -->
+      <div class="looking-card reveal reveal-delay-2">
+        <div class="card-header">
+          <span class="card-icon">🧰</span>
+          <h4>What I Bring</h4>
+        </div>
+        <ul>
+          <li>Strong backend fundamentals with Django & PHP</li>
+          <li>Hands-on experience building real-world CRUD applications</li>
+          <li>Solid database design using MySQL & MongoDB</li>
+          <li>Clean, maintainable code with Git-based workflows</li>
+        </ul>
+      </div>
+
+      <!-- What I Want -->
+      <div class="looking-card reveal reveal-delay-3">
+        <div class="card-header">
+          <span class="card-icon">💡</span>
+          <h4>What I Want</h4>
+        </div>
+        <ul>
+          <li>Internship or entry-level roles contributing to production-ready features</li>
+          <li>Mentorship-driven teams building real-world products</li>
+          <li>Exposure to APIs, scalable systems, and automation</li>
+        </ul>
+      </div>
+
+      <!-- Availability -->
+      <div class="looking-card reveal reveal-delay-4 availability-card">
+        <div class="card-header">
+          <span class="card-icon">⏱️</span>
+          <h4>Availability</h4>
+        </div>
+        <p>
+          Open to internships, part-time, and full-time entry-level roles
+        </p>
+        <span class="status-badge">Actively Looking</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- Skills -->
+<section id="skills" class="skills-section">
+  <div class="skills-container">
+
+    <h2 class="skills-title reveal">Skills & Expertise</h2>
+    <div class="skills-underline reveal reveal-delay-1"></div>
+
+    <div class="skills-grid-2">
+
+      <!-- Backend -->
+      <div class="skill-card reveal reveal-delay-1">
+        <h4>● Backend Development</h4>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>Python (Django)</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>PHP</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontend -->
+      <div class="skill-card reveal reveal-delay-2">
+        <h4>● Frontend Development</h4>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>HTML, CSS</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>JavaScript</span>
+            <span>65%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:65%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Databases -->
+      <div class="skill-card reveal reveal-delay-3">
+        <h4>● Databases</h4>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>MySQL</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>MongoDB</span>
+            <span>65%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:65%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <div class="skill-card reveal reveal-delay-4">
+        <h4>● Tools & Platforms</h4>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>Git & GitHub</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>VS Code</span>
+            <span>85%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:85%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>Android Studio</span>
+            <span>65%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:65%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Programming Languages -->
+      <div class="skill-card reveal reveal-delay-5">
+        <h4>● Programming Languages</h4>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>Java</span>
+            <span>70%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:70%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>JavaScript</span>
+            <span>60%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:65%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>PHP</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>Python</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>HTML & CSS</span>
+            <span>80%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar blue" style="width:80%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>C</span>
+            <span>75%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:65%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>C++</span>
+            <span>60%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:60%"></div>
+          </div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-label">
+            <span>Shell Scripting</span>
+            <span>70%</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar green" style="width:55%"></div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Projects -->
+<section id="projects" class="projects-section">
+  <div class="projects-container">
+
+    <h2 class="projects-title">Featured Projects</h2>
+    <div class="projects-underline"></div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-box reveal reveal-delay-1">
+        <div class="project-header">
+          <div class="project-icon">&lt;/&gt;</div>
+          <h3>TiCare – Pet Vaccination Management System</h3>
+        </div>
+
+        <div class="project-tags">
+          <span>Web Application</span>
+          <span>CRUD</span>
+          <span>PHP</span>
+          <span>MySQL</span>
+          <span>Dashboard</span>
+          <span>Status Tracking</span>
+          <span>Reports</span>
+        </div>
+
+        <p class="project-desc">
+          A web-based application that digitizes pet vaccination records and
+          tracks vaccination status.
+        </p>
+
+        <h4 class="project-subtitle">Key Contributions</h4>
+        <ul class="project-list">
+          <li>Developed a CRUD-based web application</li>
+          <li>Implemented status-based logic (Upcoming, Administered, Overdue)</li>
+          <li>Designed a dashboard with alerts and data visualization</li>
+          <li>Built report generation modules for health history tracking</li>
+        </ul>
+
+        <hr />
+
+        <h4 class="project-subtitle">Tech Stack</h4>
+        <div class="project-tags tech">
+          <span>PHP</span>
+          <span>MySQL</span>
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>JavaScript</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-box reveal reveal-delay-2">
+        <div class="project-header">
+          <div class="project-icon">&lt;/&gt;</div>
+          <h3>Construction Helper – Android Application</h3>
+        </div>
+
+        <div class="project-tags">
+          <span>Android App</span>
+          <span>Full-Stack Development</span>
+          <span>PHP Backend</span>
+          <span>MySQL</span>
+          <span>REST Concepts</span>
+        </div>
+
+        <p class="project-desc">
+          An Android application connecting builders, customers, and suppliers
+          for construction and home development.
+        </p>
+
+        <h4 class="project-subtitle">Key Contributions</h4>
+        <ul class="project-list">
+          <li>Built an end-to-end Android application</li>
+          <li>Integrated backend services using PHP & MySQL</li>
+          <li>Enabled product comparison and purchasing workflows</li>
+          <li>Designed the system with future scalability in mind</li>
+        </ul>
+
+        <hr />
+
+        <h4 class="project-subtitle">Tech Stack</h4>
+        <div class="project-tags tech">
+          <span>PHP</span>
+          <span>MySQL</span>
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>Android Studio</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section id="education" class="education-section">
+  <div class="education-container">
+
+    <h2 class="education-title reveal">Education</h2>
+    <div class="education-underline reveal reveal-delay-1"></div>
+
+    <div class="education-list">
+
+      <!-- MCA -->
+      <div class="education-card reveal reveal-delay-1">
+        <div class="edu-left">
+          <div class="edu-icon">🎓</div>
+        </div>
+
+        <div class="edu-content">
+          <h3>Master of Computer Applications (MCA)</h3>
+          <p class="edu-college">Nirmala College, Muvattupuzha</p>
+          <p class="edu-year">📅 2024 – 2026</p>
+        </div>
+
+        <span class="edu-badge ongoing">Ongoing</span>
+      </div>
+
+      <!-- BCA -->
+      <div class="education-card reveal reveal-delay-2">
+        <div class="edu-left">
+          <div class="edu-icon">🎓</div>
+        </div>
+
+        <div class="edu-content">
+          <h3>Bachelor of Computer Applications (BCA)</h3>
+          <p class="edu-college">Mar Osthatheos College, Perumpilavu</p>
+          <p class="edu-year">
+            📅 2021 – 2024
+            <span class="cgpa">CGPA: 6.5</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- HSE -->
+      <div class="education-card reveal reveal-delay-3">
+        <div class="edu-left">
+          <div class="edu-icon"></div>
+        </div>
+
+        <div class="edu-content">
+          <h3>Higher Secondary Education (HSE)</h3>
+          <p class="edu-college">Concord EHSS</p>
+          <p class="edu-year">
+            📅 2019 – 2021
+            <span class="cgpa">Percentage: 80.25%</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- SSLC -->
+      <div class="education-card reveal reveal-delay-4">
+        <div class="edu-left">
+          <div class="edu-icon"></div>
+        </div>
+
+        <div class="edu-content">
+          <h3>Secondary School Leaving Certificate (SSLC)</h3>
+          <p class="edu-college">DePaul EHSS</p>
+          <p class="edu-year">
+            📅 2019
+            <span class="cgpa">Percentage: 87%</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- Contact -->
+<section class="cta-section" id="contact">
+  <div class="cta-container">
+
+    <h2>Let's Build Something Impactful</h2>
+
+    <p>
+      I'm actively looking for internships and fresher roles where I can
+      contribute to real-world projects, grow as a backend developer,
+      and deliver value from day one.
+    </p>
+
+    <div class="cta-links reveal reveal-delay-1">
+      <a href="mailto:ashikea96@gmail.com" class="cta-pill">
+        ✉️ ashikea96@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/ashikea96/" target="_blank" class="cta-pill">
+        💼 LinkedIn
+      </a>
+      <a href="https://github.com/ashikea" target="_blank" class="cta-pill">
+        🐙 GitHub
+      </a>
+    </div>
+
+    <div class="cta-buttons reveal reveal-delay-2">
+      <a href="assets/resume.pdf" class="cta-btn primary" download>
+        ⬇️ Download Resume
+      </a>
+
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ashikea96@gmail.com&su=Job%20Opportunity&body=Hi%20Ashik%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect."
+        target="_blank"
+        class="cta-btn secondary">
+        📩 Contact Me
+      </a>
+    </div>
+
+
+  </div>
+</section>
+
+
+  <footer>
+    <p>© 2025 Ashik E A. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
