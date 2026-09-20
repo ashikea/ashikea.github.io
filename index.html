@@ -1,306 +1,827 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ashik E A | Developer Portfolio</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ashik — Software Testing / QA Engineer. Manual testing, test design, defect reporting, automation, API and performance testing.">
+    <meta name="author" content="Ashik E A">
+    <title>Ashik | Software Testing &amp; QA Engineer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- Aurora Canvas -->
-    <canvas id="auroraCanvas"></canvas>
-
-    <!-- Noise Overlay -->
-    <div class="noise-overlay"></div>
-
-    <!-- Glow Cursor Follower -->
-    <div class="glow-cursor" id="glowCursor"></div>
-
-    <!-- Main Wrapper -->
-    <div class="main-wrapper">
-
-        <!-- Navbar -->
-        <header class="navbar">
-            <div class="nav-container">
-                <div class="logo">Ashik<span>.</span></div>
-                <nav class="nav-links">
-                    <a href="#about">About</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#education">Education</a>
-                    <a href="#contact">Contact</a>
-                    <a href="#contact" class="hire-btn">Hire Me</a>
-                </nav>
-                <div class="menu-toggle" id="menuToggle">☰</div>
-            </div>
-        </header>
-
-        <!-- Mobile Menu -->
-        <div class="menu-overlay" id="menuOverlay"></div>
-        <div class="mobile-menu" id="mobileMenu">
-            <div class="mobile-header">
-                <div class="logo">Ashik<span>.</span></div>
-                <span class="close-btn" id="closeMenu">✕</span>
-            </div>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#education">Education</a>
-            <a href="#contact">Contact</a>
-            <a href="#contact" class="mobile-hire-btn">Hire Me</a>
-        </div>
-
-        <!-- Hero -->
-        <section class="hero" id="hero">
-            <div class="hero-content reveal">
-                <div class="profile-wrap">
-                    <div class="orbit-ring"></div>
-                    <div class="orbit-ring"></div>
-                    <div class="orbit-ring"></div>
-                    <img src="assets/profile.jpeg" alt="Ashik E A" class="profile-img" />
-                </div>
-                <h1>Ashik E A</h1>
-                <h3>Junior Backend Developer | Django Developer | AI/ML Enthusiast</h3>
-                <p>Building scalable web applications, REST APIs, and AI-powered solutions using Python, Django, Flutter, PHP, and MySQL.</p>
-                <div class="cta">
-                    <a href="#projects" class="btn primary">View Projects</a>
-                    <a href="#contact" class="btn secondary">Contact Me</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- About -->
-        <section id="about">
-            <h2 class="section-title reveal">About Me</h2>
-            <div class="section-underline reveal reveal-delay-1"></div>
-            <div class="about-bento">
-                <div class="about-card about-intro reveal reveal-delay-1">
-                    <p>MCA graduate and full-stack developer with hands-on experience in Python (Django), PHP, JavaScript, MySQL, MongoDB, and Flutter. Skilled in developing RESTful APIs, role-based dashboards, database-driven web applications, and AI-powered solutions. Certified in Advanced AI & Machine Learning (ELITE Grade) and completed Android Development Internship at Grapesgenix Technical Solutions. Passionate about backend engineering, AI/ML, NLP, and building scalable applications that solve real-world problems.</p>
-                </div>
-                <div class="about-card reveal reveal-delay-2">
-                    <span class="about-icon">⚙️</span>
-                    <h4>Backend Development</h4>
-                    <p style="color:var(--text3);font-size:0.85rem;">Django, PHP, REST APIs, Role-based systems</p>
-                </div>
-                <div class="about-card reveal reveal-delay-3">
-                    <span class="about-icon">🤖</span>
-                    <h4>AI & Machine Learning</h4>
-                    <p style="color:var(--text3);font-size:0.85rem;">NLP, Sentiment Analysis, Emotion Detection</p>
-                </div>
-                <div class="about-card reveal reveal-delay-4">
-                    <span class="about-icon">📱</span>
-                    <h4>Flutter Development</h4>
-                    <p style="color:var(--text3);font-size:0.85rem;">Cross-platform mobile apps with Dart</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- What I'm Looking For -->
-        <section id="looking-for">
-            <h2 class="section-title reveal">What I'm Looking For</h2>
-            <div class="section-underline reveal reveal-delay-1"></div>
-            <div class="looking-bento">
-                <div class="looking-card reveal reveal-delay-1">
-                    <div class="card-header"><span class="card-icon">🎯</span><h4>Target Roles</h4></div>
-                    <ul>
-                        <li>Junior Backend Developer</li><li>Django Developer</li><li>Python Developer</li><li>AI/ML Engineer</li><li>Flutter Developer</li><li>Software Developer</li>
-                    </ul>
-                </div>
-                <div class="looking-card reveal reveal-delay-2">
-                    <div class="card-header"><span class="card-icon">🧰</span><h4>What I Bring</h4></div>
-                    <ul>
-                        <li>REST API development using Django</li><li>AI/ML and NLP integration</li><li>Role-based authentication systems</li><li>Database design MySQL & MongoDB</li><li>Flutter app development</li><li>Git-based workflow</li>
-                    </ul>
-                </div>
-                <div class="looking-card reveal reveal-delay-3">
-                    <div class="card-header"><span class="card-icon">💡</span><h4>What I Want</h4></div>
-                    <ul>
-                        <li>Internship or entry-level roles</li><li>Mentorship-driven teams</li><li>Exposure to APIs & scalable systems</li>
-                    </ul>
-                </div>
-                <div class="looking-card reveal reveal-delay-4">
-                    <div class="card-header"><span class="card-icon">⏱️</span><h4>Availability</h4></div>
-                    <p style="color:var(--text2);font-size:0.9rem;">Open to full-time opportunities in Backend, Python, Django, AI/ML, and Software Engineering.</p>
-                    <span class="status-badge">Actively Looking</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills -->
-        <section id="skills">
-            <h2 class="section-title reveal">Skills & Expertise</h2>
-            <div class="section-underline reveal reveal-delay-1"></div>
-            <div class="skills-constellation">
-                <div class="skill-node-card reveal reveal-delay-1">
-                    <h4>● Backend Development</h4>
-                    <div class="skill-orbs">
-                        <span class="skill-orb"><span class="orb-dot high"></span> Python (Django) — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot high"></span> PHP — 80%</span>
-                    </div>
-                </div>
-                <div class="skill-node-card reveal reveal-delay-2">
-                    <h4>● Frontend Development</h4>
-                    <div class="skill-orbs">
-                        <span class="skill-orb"><span class="orb-dot high"></span> HTML, CSS — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot mid"></span> JavaScript — 65%</span>
-                    </div>
-                </div>
-                <div class="skill-node-card reveal reveal-delay-3">
-                    <h4>● Databases</h4>
-                    <div class="skill-orbs">
-                        <span class="skill-orb"><span class="orb-dot high"></span> MySQL — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot mid"></span> MongoDB — 65%</span>
-                    </div>
-                </div>
-                <div class="skill-node-card reveal reveal-delay-4">
-                    <h4>● Tools & Platforms</h4>
-                    <div class="skill-orbs">
-                        <span class="skill-orb"><span class="orb-dot high"></span> Git & GitHub — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot high"></span> VS Code — 85%</span>
-                        <span class="skill-orb"><span class="orb-dot mid"></span> Android Studio — 65%</span>
-                    </div>
-                </div>
-                <div class="skill-node-card reveal reveal-delay-5">
-                    <h4>● Programming Languages</h4>
-                    <div class="skill-orbs">
-                        <span class="skill-orb"><span class="orb-dot high"></span> Java — 70%</span>
-                        <span class="skill-orb"><span class="orb-dot mid"></span> JavaScript — 60%</span>
-                        <span class="skill-orb"><span class="orb-dot high"></span> PHP — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot high"></span> Python — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot high"></span> HTML & CSS — 80%</span>
-                        <span class="skill-orb"><span class="orb-dot good"></span> C — 75%</span>
-                        <span class="skill-orb"><span class="orb-dot good"></span> C++ — 60%</span>
-                        <span class="skill-orb"><span class="orb-dot good"></span> Shell Scripting — 70%</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects -->
-        <section id="projects">
-            <h2 class="section-title reveal">Featured Projects</h2>
-            <div class="section-underline reveal reveal-delay-1"></div>
-            <div class="projects-bento">
-                <!-- Featured Project -->
-                <div class="project-card featured reveal reveal-delay-1">
-                    <div class="project-header">
-                        <div class="project-icon">🎉</div>
-                        <h3>LiveEvent – Smart Event Management System with Emotion Analysis</h3>
-                    </div>
-                    <div class="project-tags"><span>Django</span><span>Python</span><span>NLP</span><span>AI/ML</span><span>Emotion Detection</span><span>MySQL</span><span>Bootstrap</span></div>
-                    <p class="project-desc">LiveEvent is a web-based event management platform designed to simplify organizing, managing, and participating in events. The system provides dedicated modules for users, event organizers, and administrators.</p>
-                    <p class="project-subtitle">Key Highlight</p>
-                    <p class="project-desc">AI-powered feedback analysis using NLP — analyzes attendee reviews and detects emotions and sentiments, helping organizers understand participant experiences.</p>
-                    <p class="project-subtitle">Main Features</p>
-                    <ul class="project-list">
-                        <li>✔ User Registration & Login</li><li>✔ Organizer Dashboard</li><li>✔ Event Creation & Management</li><li>✔ Event Booking & Registration</li><li>✔ Feedback Collection System</li><li>✔ Emotion & Sentiment Analysis</li><li>✔ Admin Management Panel</li><li>✔ Responsive UI</li>
-                    </ul>
-                    <hr>
-                    <p class="project-subtitle">Technologies Used</p>
-                    <div class="project-tags tech"><span>Python</span><span>Django</span><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Bootstrap</span><span>MySQL</span><span>SQLite</span><span>NLP</span><span>Sentiment Analysis</span><span>Emotion Detection</span></div>
-                </div>
-                <!-- Project 2 -->
-                <div class="project-card reveal reveal-delay-2">
-                    <div class="project-header">
-                        <div class="project-icon">&lt;/&gt;</div>
-                        <h3>TiCare – Pet Vaccination Management System</h3>
-                    </div>
-                    <div class="project-tags"><span>Web App</span><span>CRUD</span><span>PHP</span><span>MySQL</span><span>Dashboard</span></div>
-                    <p class="project-desc">A web-based application that digitizes pet vaccination records and tracks vaccination status.</p>
-                    <p class="project-subtitle">Key Contributions</p>
-                    <ul class="project-list">
-                        <li>✔ CRUD-based web application</li><li>✔ Status-based logic (Upcoming, Administered, Overdue)</li><li>✔ Dashboard with alerts & visualization</li><li>✔ Report generation modules</li>
-                    </ul>
-                    <hr>
-                    <p class="project-subtitle">Tech Stack</p>
-                    <div class="project-tags tech"><span>PHP</span><span>MySQL</span><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
-                </div>
-                <!-- Project 3 -->
-                <div class="project-card reveal reveal-delay-3">
-                    <div class="project-header">
-                        <div class="project-icon">&lt;/&gt;</div>
-                        <h3>Construction Helper – Android Application</h3>
-                    </div>
-                    <div class="project-tags"><span>Android App</span><span>Full-Stack</span><span>PHP Backend</span><span>MySQL</span><span>REST</span></div>
-                    <p class="project-desc">An Android application connecting builders, customers, and suppliers for construction and home development.</p>
-                    <p class="project-subtitle">Key Contributions</p>
-                    <ul class="project-list">
-                        <li>✔ End-to-end Android application</li><li>✔ Backend services using PHP & MySQL</li><li>✔ Product comparison & purchasing</li><li>✔ Designed for scalability</li>
-                    </ul>
-                    <hr>
-                    <p class="project-subtitle">Tech Stack</p>
-                    <div class="project-tags tech"><span>PHP</span><span>MySQL</span><span>HTML</span><span>CSS</span><span>Android Studio</span></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Education -->
-        <section id="education">
-            <h2 class="section-title reveal">Education</h2>
-            <div class="section-underline reveal reveal-delay-1"></div>
-            <div class="edu-timeline">
-                <div class="edu-node reveal reveal-delay-1">
-                    <h3>Master of Computer Applications (MCA)</h3>
-                    <p class="edu-college">Nirmala College, Muvattupuzha</p>
-                    <p class="edu-year">📅 2024 – 2026 <span class="cgpa">CGPA: 7.86</span></p>
-                </div>
-                <div class="edu-node reveal reveal-delay-2">
-                    <h3>Bachelor of Computer Applications (BCA)</h3>
-                    <p class="edu-college">Mar Osthatheos College, Perumpilavu</p>
-                    <p class="edu-year">📅 2021 – 2024 <span class="cgpa">CGPA: 6.5</span></p>
-                </div>
-                <div class="edu-node reveal reveal-delay-3">
-                    <h3>Higher Secondary Education (HSE)</h3>
-                    <p class="edu-college">Concord EHSS</p>
-                    <p class="edu-year">📅 2019 – 2021 <span class="cgpa">Percentage: 80.25%</span></p>
-                </div>
-                <div class="edu-node reveal reveal-delay-4">
-                    <h3>Secondary School Leaving Certificate (SSLC)</h3>
-                    <p class="edu-college">DePaul EHSS</p>
-                    <p class="edu-year">📅 2019 <span class="cgpa">Percentage: 87%</span></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Certifications -->
-        <section id="certifications">
-            <h2 class="section-title reveal">Certifications</h2>
-            <div class="section-underline reveal reveal-delay-1"></div>
-            <div class="cert-grid">
-                <div class="cert-card reveal reveal-delay-1"><h4>Advanced AI & Machine Learning</h4><p>NPTEL - ELITE Grade</p></div>
-                <div class="cert-card reveal reveal-delay-2"><h4>Python for Data Science</h4><p>NPTEL</p></div>
-                <div class="cert-card reveal reveal-delay-3"><h4>Android Development Internship</h4><p>Grapesgenix Technical Solutions</p></div>
-                <div class="cert-card reveal reveal-delay-4"><h4>Google Cloud - Agent Fundamentals</h4></div>
-                <div class="cert-card reveal reveal-delay-5"><h4>Google Cloud - Enterprise Agents</h4></div>
-                <div class="cert-card reveal"><h4>Create Your First Gemini Enterprise App</h4></div>
-            </div>
-        </section>
-
-        <!-- Contact -->
-        <section class="contact-section" id="contact">
-            <h2 class="reveal">Let's Build Something Impactful</h2>
-            <p class="reveal reveal-delay-1">I'm actively looking for internships and fresher roles where I can contribute to real-world projects, grow as a backend developer, and deliver value from day one.</p>
-            <div class="contact-pills reveal reveal-delay-2">
-                <a href="mailto:ashikea96@gmail.com" class="contact-pill">✉️ ashikea96@gmail.com</a>
-                <a href="https://www.linkedin.com/in/ashikea96/" target="_blank" class="contact-pill">💼 LinkedIn</a>
-                <a href="https://github.com/ashikea" target="_blank" class="contact-pill">🐙 GitHub</a>
-            </div>
-            <div class="contact-buttons reveal reveal-delay-3">
-                <a href="assets/resume.pdf" class="btn primary" download>⬇️ Download Resume</a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ashikea96@gmail.com&su=Job%20Opportunity&body=Hi%20Ashik%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20connect." target="_blank" class="btn secondary">📩 Contact Me</a>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <p>© 2026 Ashik E A | Junior Backend Developer | Django Developer | AI/ML Enthusiast</p>
-        </footer>
-
+    <!-- Animated background -->
+    <div class="bg-layer" aria-hidden="true">
+        <span class="blob blob-1"></span>
+        <span class="blob blob-2"></span>
+        <span class="blob blob-3"></span>
+        <span class="liquid-wave wave-1"></span>
+        <span class="liquid-wave wave-2"></span>
+        <div class="particles"></div>
     </div>
 
+    <header class="site-header" id="siteHeader">
+        <nav class="nav" aria-label="Primary navigation">
 
-  <script src="script.js"></script>
+            <a href="#home" class="nav-brand">Ashik E A<span>.</span></a>
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Switch to night mode"
+                aria-pressed="false"
+                title="Switch to night mode">
+                <span class="theme-icon theme-sun" aria-hidden="true">☀</span>
+                <span class="theme-icon theme-moon" aria-hidden="true">☾</span>
+                <span class="theme-label">Night</span>
+            </button>
+
+            <button
+                type="button"
+                class="nav-toggle"
+                id="navToggle"
+                aria-label="Toggle navigation menu"
+                aria-expanded="false"
+                aria-controls="navList">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-list" id="navList">
+                <li><a class="nav-link active" href="#home">Home</a></li>
+                <li><a class="nav-link" href="#about">About</a></li>
+                <li><a class="nav-link" href="#experience">Experience</a></li>
+                <li><a class="nav-link" href="#skills">Skills</a></li>
+                <li><a class="nav-link" href="#projects">Projects</a></li>
+                <li><a class="nav-link" href="#education">Education</a></li>
+                <li><a class="nav-link" href="#certifications">Certifications</a></li>
+                <li><a class="nav-link" href="#contact">Contact</a></li>
+                <span class="nav-indicator" aria-hidden="true"></span>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- HOME -->
+    <section id="home" class="hero section">
+
+        <div class="hero-inner">
+
+            <!-- PROFILE IMAGE -->
+            <div class="hero-profile reveal">
+
+                <div class="profile-liquid">
+
+                    <img
+                        src="assets/images/profile.jpg"
+                        alt="Ashik E A - Software Testing / QA Engineer"
+                        class="profile-image">
+
+                    <span class="profile-shine"></span>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO CONTENT -->
+            <p class="hero-eyebrow reveal">
+                Software Testing · Quality Assurance
+            </p>
+
+
+            <h1 class="hero-title reveal">
+                Ashik E A  
+            </h1>
+
+
+            <p class="hero-role reveal">
+
+                Software Testing Intern
+
+                <span class="accent">
+                    @ Luminar Technolab
+                </span>
+
+            </p>
+
+
+            <p class="hero-text reveal">
+
+                I design and execute tests that catch problems before users do —
+                manual testing, structured test design and clear, reproducible
+                defect reporting for web and mobile applications.
+
+            </p>
+
+
+            <div class="hero-actions reveal">
+
+                <a
+                    href="#projects"
+                    class="btn btn-primary">
+
+                    View Projects
+
+                </a>
+
+
+                <a
+                    href="#contact"
+                    class="btn btn-primary">
+
+                    Get in Touch
+
+                </a>
+
+            </div>
+
+
+            <ul class="hero-facts reveal">
+
+                <li class="hero-fact">
+                    Manual Testing
+                </li>
+
+                <li class="hero-fact">
+                    Automation Testing
+                </li>
+
+                <li class="hero-fact">
+                    Test Case Design
+                </li>
+
+                <li class="hero-fact">
+                    Bug Reporting
+                </li>
+
+                <li class="hero-fact">
+                    API Testing
+                </li>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="section">
+            <div class="section-heading">
+                <p>Who I Am</p>
+                <h2>About Me</h2>
+            </div>
+
+            <div class="about-grid">
+
+                <article class="about-card liquid reveal">
+                    <h3>Quality first, always</h3>
+
+                    <p>
+                        I am focused on software testing and quality assurance,
+                        with practical experience in manual testing, test scenario
+                        and test case preparation, execution, defect identification,
+                        and reproducible bug reporting.
+                    </p>
+
+                    <p>
+                        I am currently building industry experience as a Software
+                        Testing Intern at Luminar Technolab and expanding into
+                        automation, API and performance testing.
+                    </p>
+
+                    <p>
+                        I also have a development background in Python, PHP, Java,
+                        JavaScript, Django, REST APIs, MySQL and MongoDB.
+                    </p>
+                </article>
+
+                <aside class="about-card liquid reveal">
+                    <h3>Quick Info</h3>
+
+                    <ul class="info-list">
+                        <li>
+                            <span>Role</span>
+                            <strong>Software Testing Intern</strong>
+                        </li>
+                        <li>
+                            <span>Company</span>
+                            <strong>Luminar Technolab</strong>
+                        </li>
+                        <li>
+                            <span>Core Focus</span>
+                            <strong>Manual Testing &amp; Test Design</strong>
+                        </li>
+                        <li>
+                            <span>Currently Learning</span>
+                            <strong>Selenium · Playwright · Postman · JMeter</strong>
+                        </li>
+                        <li>
+                            <span>Status</span>
+                            <strong class="accent">Currently Working</strong>
+                        </li>
+                    </ul>
+                </aside>
+
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section id="experience" class="section section-light">
+            <div class="section-heading">
+                <p>Where I've Worked</p>
+                <h2>Experience</h2>
+            </div>
+
+            <div class="timeline">
+
+                <article class="timeline-item">
+                    <span class="timeline-dot" aria-hidden="true"></span>
+
+                    <div class="experience-card current liquid reveal">
+                        <div class="exp-top">
+
+                            <div>
+                                <h3>Software Testing Intern</h3>
+                                <p class="exp-company">Luminar Technolab</p>
+                            </div>
+
+                            <span class="status current-badge">
+                                Currently Working
+                            </span>
+
+                        </div>
+
+                        <p class="exp-date">22/07/2026 – Present</p>
+
+                        <p class="exp-text">
+                            Currently gaining hands-on experience in software quality
+                            assurance and testing workflows. Manual Testing has been
+                            completed, while automation and other modern testing areas
+                            are continuing.
+                        </p>
+
+                        <div class="tags">
+                            <span>Manual Testing ✓</span>
+                            <span>Test Cases</span>
+                            <span>Test Scenarios</span>
+                            <span>Bug Reporting</span>
+                            <span>Regression Testing</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="timeline-item">
+                    <span class="timeline-dot" aria-hidden="true"></span>
+
+                    <div class="experience-card liquid reveal">
+
+                        <div class="exp-top">
+                            <div>
+                                <h3>Android Development Intern</h3>
+                                <p class="exp-company">
+                                    Grapesgenix Technical Solutions Pvt. Ltd.
+                                </p>
+                            </div>
+
+                            <span class="status">
+                                Dec 2023 – Feb 2024
+                            </span>
+                        </div>
+
+                        <p class="exp-text">
+                            Worked on Android application development, UI components,
+                            application workflows, PHP REST APIs and frontend-backend
+                            integration.
+                        </p>
+
+                        <div class="tags">
+                            <span>Android</span>
+                            <span>Java</span>
+                            <span>PHP REST API</span>
+                            <span>MySQL</span>
+                        </div>
+
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="section">
+            <div class="section-heading">
+                <p>Technical Expertise</p>
+                <h2>Skills</h2>
+            </div>
+
+            <div class="skills-grid">
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Software Testing</h3>
+                        <span class="status completed">Completed</span>
+                    </div>
+                    <div class="tags">
+                        <span>Manual Testing</span>
+                        <span>Functional Testing</span>
+                        <span>Smoke Testing</span>
+                        <span>Sanity Testing</span>
+                        <span>Regression Testing</span>
+                        <span>Retesting</span>
+                        <span>Static Testing</span>
+                        <span>Dynamic Testing</span>
+                        <span>Mobile Testing</span>
+                        <span>Bug Reporting</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Test Design</h3>
+                        <span class="status completed">Completed</span>
+                    </div>
+                    <div class="tags">
+                        <span>Equivalence Partitioning</span>
+                        <span>Boundary Value Analysis</span>
+                        <span>Decision Tables</span>
+                        <span>State Transition</span>
+                        <span>Use Case Testing</span>
+                        <span>Test Scenarios</span>
+                        <span>Test Cases</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Automation</h3>
+                        <span class="status ongoing">Ongoing</span>
+                    </div>
+                    <div class="tags">
+                        <span>Selenium</span>
+                        <span>WebDriver</span>
+                        <span>TestNG</span>
+                        <span>Maven</span>
+                        <span>POM</span>
+                        <span>Playwright</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>API &amp; Performance</h3>
+                        <span class="status ongoing">Ongoing</span>
+                    </div>
+                    <div class="tags">
+                        <span>Postman</span>
+                        <span>REST API</span>
+                        <span>Newman</span>
+                        <span>JMeter</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Programming</h3>
+                        <span class="status ongoing">Ongoing</span>
+                    </div>
+                    <div class="tags">
+                        <span>Java</span>
+                        <span>Python</span>
+                        <span>JavaScript</span>
+                        <span>PHP</span>
+                        <span>C</span>
+                        <span>C++</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Web Development</h3>
+                        <span class="status">Experience</span>
+                    </div>
+                    <div class="tags">
+                        <span>Django</span>
+                        <span>HTML5</span>
+                        <span>CSS3</span>
+                        <span>REST API</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Database</h3>
+                        <span class="status ">Experience</span>
+                    </div>
+                    <div class="tags">
+                        <span>SQL</span>
+                        <span>MySQL</span>
+                        <span>MongoDB</span>
+                    </div>
+                </div>
+
+                <div class="skill-card liquid reveal">
+                    <div class="skill-title">
+                        <h3>Tools</h3>
+                        <span class="status ongoing">Ongoing</span>
+                    </div>
+                    <div class="tags">
+                        <span>Git</span>
+                        <span>GitHub</span>
+                        <span>JIRA</span>
+                        <span>Postman</span>
+                        <span>VS Code</span>
+                        <span>Android Studio</span>
+                        <span>MS Excel</span>
+                        <span>Linux</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="section section-light">
+            <div class="section-heading">
+                <p>My Work</p>
+                <h2>Projects</h2>
+            </div>
+
+            <div class="projects-container">
+
+                <article class="project-card liquid reveal">
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            Manual Testing Project
+                        </span>
+
+                        <h3>Eco Shop</h3>
+
+                        <h4>E-Commerce Application Testing</h4>
+
+                        <p>
+                            Completed a manual testing project covering application
+                            analysis, test scenario preparation, test case creation,
+                            test execution, defect identification and bug reporting.
+                        </p>
+
+                        <div class="project-tags">
+                            <span>Manual Testing</span>
+                            <span>Test Cases</span>
+                            <span>Test Scenarios</span>
+                            <span>Bug Reporting</span>
+                            <span>Functional Testing</span>
+                            <span>Regression Testing</span>
+                        </div>
+
+                        <div class="project-status">
+                            <span class="status completed">Completed</span>
+                        </div>
+
+                        <div class="project-buttons">
+                            <a
+                                href="assets/docs/eco_store_test_report_ashik.xlsx"
+                                class="project-link"
+                                target="_blank"
+                                rel="noopener">
+                                View Test Report
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+
+                <article class="project-card liquid reveal">
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            Full Stack Project
+                        </span>
+
+                        <h3>LiveEvent</h3>
+
+                        <h4>Event Management System with Emotion Detection</h4>
+
+                        <p>
+                            Full-stack event management platform with role-based
+                            dashboards, event booking workflows, RESTful APIs and
+                            NLP-based sentiment analysis for attendee feedback.
+                        </p>
+
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>Django</span>
+                            <span>MySQL</span>
+                            <span>REST API</span>
+                            <span>NLP</span>
+                        </div>
+
+                        <div class="project-buttons">
+                            <a
+                                href="assets/docs/liveevent-documentation.pdf"
+                                class="project-link"
+                                target="_blank"
+                                rel="noopener">
+                                Project Documentation
+                            </a>
+
+                            <a
+                                href="https://github.com/ashikea"
+                                class="project-link secondary-link"
+                                target="_blank"
+                                rel="noopener">
+                                GitHub
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+
+                <article class="project-card liquid reveal">
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            Web Application
+                        </span>
+
+                        <h3>TiCare</h3>
+
+                        <h4>Pet Vaccination Management System</h4>
+
+                        <p>
+                            Web-based pet vaccination management system with CRUD
+                            operations, automated reminders, role-based dashboards
+                            and relational database design.
+                        </p>
+
+                        <div class="project-tags">
+                            <span>PHP</span>
+                            <span>MySQL</span>
+                            <span>CRUD</span>
+                        </div>
+
+                        <div class="project-buttons">
+                            <a
+                                href="assets/docs/ticare-documentation.pdf"
+                                class="project-link"
+                                target="_blank"
+                                rel="noopener">
+                                Project Documentation
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+
+                <article class="project-card liquid reveal">
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            Android Application
+                        </span>
+
+                        <h3>Construction Helper</h3>
+
+                        <h4>Multi-Role Android Application</h4>
+
+                        <p>
+                            Multi-role Android application using a PHP REST API
+                            backend with role-based access control and CRUD
+                            operations.
+                        </p>
+
+                        <div class="project-tags">
+                            <span>Java</span>
+                            <span>Android Studio</span>
+                            <span>PHP</span>
+                            <span>MySQL</span>
+                            <span>REST API</span>
+                        </div>
+
+                        <div class="project-buttons">
+                            <a
+                                href="assets/docs/construction-helper-documentation.pdf"
+                                class="project-link"
+                                target="_blank"
+                                rel="noopener">
+                                Project Documentation
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- EDUCATION -->
+        <section id="education" class="section">
+            <div class="section-heading">
+                <p>Academic Background</p>
+                <h2>Education</h2>
+            </div>
+
+            <div class="education-grid">
+
+                <article class="edu-card liquid reveal">
+                    <span class="edu-year">2024 – 2026</span>
+                    <h3>Master of Computer Applications (MCA)</h3>
+                    <h4>Nirmala College, Muvattupuzha</h4>
+                    <p>Percentage: 74.72%</p>
+                </article>
+
+                <article class="edu-card liquid reveal">
+                    <span class="edu-year">2021 – 2024</span>
+                    <h3>Bachelor of Computer Applications (BCA)</h3>
+                    <h4>Mar Osthatheos College, Perumpilavu</h4>
+                    <p>Percentage: 65%</p>
+                </article>
+
+                <article class="edu-card liquid reveal">
+                    <span class="edu-year">2019 – 2021</span>
+                    <h3>Higher Secondary (+2)</h3>
+                    <h4>Concord E.H.S.S</h4>
+                    <p>Percentage: 80.25%</p>
+                </article>
+
+                <article class="edu-card liquid reveal">
+                    <span class="edu-year">2019</span>
+                    <h3>SSLC</h3>
+                    <h4>DePaul E.M.H.S.S</h4>
+                    <p>Percentage: 87%</p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- CERTIFICATIONS -->
+        <section id="certifications" class="section section-light">
+            <div class="section-heading">
+                <p>Credentials</p>
+                <h2>Certifications</h2>
+            </div>
+
+            <div class="cert-grid">
+
+                <article class="cert-card liquid reveal">
+                    <span class="cert-year">2025</span>
+                    <h3>Advanced AI &amp; ML Program</h3>
+                    <h4>TECHY SPOT</h4>
+                    <p>ELITE Grade for 5 days bootcamp program</p>
+                </article>
+
+                <article class="cert-card liquid reveal">
+                    <span class="cert-year">2025</span>
+                    <h3>Python for Data Science</h3>
+                    <h4>NPTEL</h4>
+                    <p>Certification</p>
+                </article>
+
+                <article class="cert-card liquid reveal">
+                    <span class="cert-year">2024</span>
+                    <h3>Android Development Internship</h3>
+                    <h4>Grapesgenix Technical Solutions Pvt. Ltd.</h4>
+                    <p>Internship Certificate</p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section">
+            <div class="section-heading">
+                <p>Let's Talk</p>
+                <h2>Contact</h2>
+            </div>
+
+            <div class="contact-grid">
+
+                <div class="contact-card liquid reveal">
+
+                    <h3>Get in touch</h3>
+
+                    <p>
+                        Open to software testing and QA opportunities,
+                        testing collaborations and project discussions.
+                    </p>
+
+                    <ul class="contact-list">
+
+                        <li>
+                            <span>Email</span>
+                            <a href="mailto:ashikea96@gmail.com">
+                                ashikea96@gmail.com
+                            </a>
+                        </li>
+
+                        <li>
+                            <span>Phone</span>
+                            <a href="tel:+919645031021">
+                                +91-9645031021
+                            </a>
+                        </li>
+
+                        <li>
+                            <span>GitHub</span>
+                            <a
+                                href="https://github.com/ashikea"
+                                target="_blank"
+                                rel="noopener">
+                                github.com/ashikea
+                            </a>
+                        </li>
+
+                        <li>
+                            <span>LinkedIn</span>
+                            <a
+                                href="https://linkedin.com/in/ashikea96"
+                                target="_blank"
+                                rel="noopener">
+                                linkedin.com/in/ashikea96
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <form class="contact-form liquid reveal" id="contactForm" novalidate>
+
+                    <!-- Web3Forms -->
+                    <input type="hidden" name="access_key" value="c998e4c1-f392-4c16-a707-3a943b54c4aa">
+
+                    <!-- Email subject -->
+                    <input type="hidden" name="subject" value="New Portfolio Contact Message">
+
+                    <!-- Optional bot protection -->
+                    <input type="checkbox" name="botcheck" class="hidden" style="display:none">
+
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Your name"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="5"
+                            placeholder="Write your message..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Send Message
+                    </button>
+
+                    <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-brand">Ashik E A<span>.</span></p>
+            <p class="footer-text">Software Testing · Quality Assurance</p>
+            <p class="footer-copy">
+                © <span id="year">2026</span> Ashik. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
