@@ -16,69 +16,161 @@
     const $$ = (selector, context = document) =>
         [...context.querySelectorAll(selector)];
 
+
+
+    /* =========================================================
+       PAGE LOADER
+       Lightweight welcome screen. It never waits on every image/font to
+       finish: the page becomes interactive first, then the loader fades.
+    ========================================================= */
+
+    const pageLoader = $("#pageLoader");
+
+    if (pageLoader) {
+        const startedAt = performance.now();
+        const minimumDisplay = reducedMotion ? 180 : (window.innerWidth < 768 ? 380 : 500);
+        let loaderClosed = false;
+
+        const hidePageLoader = () => {
+            if (loaderClosed) return;
+            loaderClosed = true;
+
+            const elapsed = performance.now() - startedAt;
+            const wait = Math.max(0, minimumDisplay - elapsed);
+
+            window.setTimeout(() => {
+                pageLoader.classList.add("hidden");
+                pageLoader.setAttribute("aria-hidden", "true");
+                document.body.classList.remove("is-loading");
+
+                window.setTimeout(() => {
+                    pageLoader.remove();
+                }, reducedMotion ? 0 : 420);
+            }, wait);
+        };
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", hidePageLoader, { once: true });
+        } else {
+            hidePageLoader();
+        }
+
+        // Hard safety limit: the loader cannot delay the page for more than 1.6s.
+        window.setTimeout(hidePageLoader, 950);
+    }
+
+
     /* =========================================================
        DAY / NIGHT THEME
-       Remembers the user's preference with localStorage.
+       Robust desktop + mobile implementation. No dependency on
+       View Transition API: the theme always switches immediately,
+       then CSS smoothly animates the visual properties.
     ========================================================= */
 
     const themeToggle = $("#themeToggle");
-    const savedTheme = localStorage.getItem("ashik-theme");
-    const prefersDark = window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const root = document.documentElement;
 
-    const applyTheme = (theme) => {
+    let savedTheme = null;
+    try {
+        savedTheme = localStorage.getItem("ashik-theme");
+    } catch (error) {
+        savedTheme = null;
+    }
+
+    const prefersDark = window.matchMedia
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        : false;
+
+    const applyTheme = (theme, persist = false) => {
         const dark = theme === "dark";
+        const resolved = dark ? "dark" : "light";
 
-        document.documentElement.setAttribute(
-            "data-theme",
-            dark ? "dark" : "light"
+        // Set the theme on <html>, which is the selector used by the CSS.
+        root.setAttribute("data-theme", resolved);
+        root.style.colorScheme = resolved;
+
+        if (persist) {
+            try {
+                localStorage.setItem("ashik-theme", resolved);
+            } catch (error) {
+                // Private browsing / blocked storage: theme still works.
+            }
+        }
+
+        if (!themeToggle) return;
+
+        themeToggle.setAttribute("aria-pressed", String(dark));
+        themeToggle.setAttribute(
+            "aria-label",
+            dark ? "Switch to day mode" : "Switch to night mode"
+        );
+        themeToggle.setAttribute(
+            "title",
+            dark ? "Switch to day mode" : "Switch to night mode"
         );
 
-        if (themeToggle) {
-            themeToggle.setAttribute("aria-pressed", String(dark));
-            themeToggle.setAttribute(
-                "aria-label",
-                dark ? "Switch to day mode" : "Switch to night mode"
-            );
-            themeToggle.setAttribute(
-                "title",
-                dark ? "Switch to day mode" : "Switch to night mode"
-            );
-
-            const themeLabel = themeToggle.querySelector(".theme-label");
-            if (themeLabel) {
-                themeLabel.textContent = dark ? "Day" : "Night";
-            }
+        const label = $(".theme-label", themeToggle);
+        if (label) {
+            label.textContent = dark ? "Day" : "Night";
         }
     };
 
-    applyTheme(
+    const initialTheme =
         savedTheme === "dark" || savedTheme === "light"
             ? savedTheme
-            : (prefersDark ? "dark" : "light")
-    );
+            : (prefersDark ? "dark" : "light");
 
-    const switchTheme = (nextTheme) => {
-        localStorage.setItem("ashik-theme", nextTheme);
-        applyTheme(nextTheme);
-    };
+    applyTheme(initialTheme);
 
     if (themeToggle) {
-        themeToggle.addEventListener("click", () => {
-            const nextTheme =
-                document.documentElement.getAttribute("data-theme") === "dark"
-                    ? "light"
-                    : "dark";
 
-            /* Use the native View Transition API when available so the
-               entire page cross-fades instead of snapping between themes. */
-            if (document.startViewTransition) {
-                document.startViewTransition(() => {
-                    switchTheme(nextTheme);
-                });
-            } else {
-                switchTheme(nextTheme);
+        // Touch devices have no persistent hover state. Give the
+        // theme control a visible press/ripple interaction instead.
+        const startThemePress = () => {
+            themeToggle.classList.remove("theme-touch-active");
+            void themeToggle.offsetWidth;
+            themeToggle.classList.add("theme-touch-active");
+        };
+
+        const endThemePress = () => {
+            themeToggle.classList.remove("theme-touch-active");
+        };
+
+        themeToggle.addEventListener("pointerdown", startThemePress, { passive: true });
+        themeToggle.addEventListener("pointerup", endThemePress, { passive: true });
+        themeToggle.addEventListener("pointercancel", endThemePress, { passive: true });
+        themeToggle.addEventListener("pointerleave", endThemePress, { passive: true });
+
+        themeToggle.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                startThemePress();
             }
+        });
+
+        themeToggle.addEventListener("keyup", endThemePress);
+
+        themeToggle.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const current = root.getAttribute("data-theme") === "dark"
+                ? "dark"
+                : "light";
+
+            const next = current === "dark" ? "light" : "dark";
+
+            // Let CSS transitions handle the visual change consistently
+            // on both desktop and mobile browsers.
+            root.classList.add("theme-changing");
+            themeToggle.classList.remove("theme-switching");
+            void themeToggle.offsetWidth;
+            themeToggle.classList.add("theme-switching");
+            applyTheme(next, true);
+
+            window.setTimeout(() => {
+                root.classList.remove("theme-changing");
+                themeToggle.classList.remove("theme-switching");
+                themeToggle.classList.remove("theme-touch-active");
+            }, 500);
         });
     }
 
@@ -100,31 +192,36 @@
 
     const header = $("#siteHeader");
 
+    /* Keep the fixed header from covering section content. */
+    const syncHeaderSpace = () => {
+        if (!header) return;
+        const height = header.offsetHeight;
+        document.documentElement.style.setProperty(
+            '--header-space',
+            `${height + 12}px`
+        );
+    };
+
     if (header) {
-        let ticking = false;
+        let headerScrolled = false;
 
         const updateHeader = () => {
-            header.classList.toggle(
-                "scrolled",
-                window.scrollY > 35
-            );
+            const next = window.scrollY > 35;
 
-            ticking = false;
+            if (next === headerScrolled) return;
+
+            headerScrolled = next;
+            header.classList.toggle("scrolled", next);
         };
 
         updateHeader();
 
-        window.addEventListener(
-            "scroll",
-            () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(updateHeader);
-                    ticking = true;
-                }
-            },
-            { passive: true }
-        );
+        window.addEventListener("scroll", updateHeader, { passive: true });
     }
+
+    syncHeaderSpace();
+    window.addEventListener("resize", syncHeaderSpace, { passive: true });
+    window.addEventListener("load", syncHeaderSpace, { once: true });
 
 
     /* =========================================================
@@ -253,139 +350,141 @@
 
 
     /* =========================================================
-       ACTIVE NAV LINK — RELIABLE + SMOOTH
-       A single indicator slides between links. The active section
-       is calculated from the real page position, avoiding the
-       IntersectionObserver ratio conflict that could select the
-       wrong menu item (for example, Certifications while Contact
-       was visible).
+       ACTIVE NAVIGATION
+       Cached section positions on scroll. Desktop uses a moving pill;
+       mobile uses the active link's own burgundy surface.
     ========================================================= */
 
-    const sections = $$("main section[id]");
-    const navLinks = $$(".nav-link");
-    const navIndicator = $(".nav-indicator");
+    const sections = $$('main section[id]');
+    const navLinks = $$('.nav-link');
+    const navIndicator = $('.nav-indicator');
 
     if (sections.length && navLinks.length && navList) {
 
         const linkById = new Map();
 
         navLinks.forEach((link) => {
-            const href = link.getAttribute("href");
-
-            if (href && href.startsWith("#") && href.length > 1) {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#') && href.length > 1) {
                 linkById.set(href.slice(1), link);
             }
         });
 
+        let sectionTops = [];
+        let activeId = '';
+        let scrollTicking = false;
+        let layoutTimer = 0;
+
         const moveIndicator = (link, immediate = false) => {
-            if (!navIndicator || !link) return;
+            if (!navIndicator || !link || window.innerWidth <= 900) return;
 
             const left = link.offsetLeft;
             const top = link.offsetTop;
+            const width = link.offsetWidth;
+            const height = link.offsetHeight;
 
             if (immediate) {
-                navIndicator.style.transition = "none";
+                navIndicator.style.transition = 'none';
             }
 
             navIndicator.style.left = `${left}px`;
             navIndicator.style.top = `${top}px`;
-            navIndicator.style.width = `${link.offsetWidth}px`;
-            navIndicator.style.height = `${link.offsetHeight}px`;
-            navIndicator.style.opacity = "1";
+            navIndicator.style.width = `${width}px`;
+            navIndicator.style.height = `${height}px`;
+            navIndicator.style.opacity = '1';
 
             if (immediate) {
                 void navIndicator.offsetWidth;
-                navIndicator.style.transition = "";
+                navIndicator.style.transition = '';
             }
         };
 
-        const activate = (id, immediate = false) => {
+        const setActive = (id, immediate = false) => {
             navLinks.forEach((link) => {
-                const isActive = link.getAttribute("href") === `#${id}`;
-
-                link.classList.toggle("active", isActive);
-
-                if (isActive) {
-                    link.setAttribute("aria-current", "page");
-                } else {
-                    link.removeAttribute("aria-current");
-                }
+                const selected = link.getAttribute('href') === `#${id}`;
+                link.classList.toggle('active', selected);
+                if (selected) link.setAttribute('aria-current', 'page');
+                else link.removeAttribute('aria-current');
             });
 
             moveIndicator(linkById.get(id), immediate);
         };
 
-        let activeId = null;
-        let ticking = false;
+        const cacheSectionTops = () => {
+            const pageY = window.scrollY;
+            sectionTops = sections.map((section) => ({
+                id: section.id,
+                top: Math.round(section.getBoundingClientRect().top + pageY)
+            }));
+        };
 
-        const getActiveId = () => {
+        const currentSectionId = () => {
+            if (!sectionTops.length) return sections[0].id;
+
             const headerHeight = header ? header.offsetHeight : 0;
+            const marker = window.scrollY + headerHeight + Math.min(130, window.innerHeight * 0.18);
+            let current = sectionTops[0].id;
 
-            // Reading line: just below the sticky navbar.
-            const marker = window.scrollY + headerHeight + Math.min(150, window.innerHeight * 0.20);
-
-            let currentId = sections[0].id;
-
-            for (const section of sections) {
-                const top = section.getBoundingClientRect().top + window.scrollY;
-
-                if (top <= marker) {
-                    currentId = section.id;
-                } else {
+            for (let i = sectionTops.length - 1; i >= 0; i--) {
+                if (sectionTops[i].top <= marker) {
+                    current = sectionTops[i].id;
                     break;
                 }
             }
 
-            // Always select the last section at the bottom of the page.
             const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-            if (window.scrollY >= maxScroll - 10) {
-                currentId = sections[sections.length - 1].id;
+            if (window.scrollY >= maxScroll - 8) {
+                current = sectionTops[sectionTops.length - 1].id;
             }
 
-            return currentId;
+            return current;
         };
 
-        const updateActiveNav = () => {
-            const currentId = getActiveId();
+        const updateActive = () => {
+            const id = currentSectionId();
 
-            if (currentId !== activeId) {
-                activeId = currentId;
-                activate(currentId);
-            } else {
-                moveIndicator(linkById.get(currentId));
+            if (id !== activeId) {
+                activeId = id;
+                setActive(id);
             }
 
-            ticking = false;
+            scrollTicking = false;
         };
 
-        const requestActiveUpdate = () => {
-            if (ticking) return;
-
-            ticking = true;
-            window.requestAnimationFrame(updateActiveNav);
+        const onScroll = () => {
+            if (scrollTicking) return;
+            scrollTicking = true;
+            requestAnimationFrame(updateActive);
         };
 
-        // Correct initial state.
-        activeId = getActiveId();
-        activate(activeId, true);
+        const refreshLayout = () => {
+            cacheSectionTops();
+            const id = activeId || currentSectionId();
+            if (id) setActive(id, true);
+        };
 
-        window.addEventListener("scroll", requestActiveUpdate, { passive: true });
-        window.addEventListener("resize", requestActiveUpdate, { passive: true });
+        // Initial measurement after fonts/layout have settled.
+        cacheSectionTops();
+        activeId = currentSectionId();
+        setActive(activeId, true);
 
-        // Set the selected item immediately when clicked. The scroll
-        // handler then keeps it synchronized while smooth scrolling runs.
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        window.addEventListener('resize', () => {
+            window.clearTimeout(layoutTimer);
+            layoutTimer = window.setTimeout(refreshLayout, 120);
+        }, { passive: true });
+
+        window.addEventListener('load', refreshLayout, { once: true });
+
         navLinks.forEach((link) => {
-            link.addEventListener("click", () => {
-                const href = link.getAttribute("href");
-                if (!href || !href.startsWith("#") || href.length < 2) return;
-
+            link.addEventListener('click', () => {
+                const href = link.getAttribute('href');
+                if (!href || !href.startsWith('#') || href.length < 2) return;
                 activeId = href.slice(1);
-                activate(activeId);
+                setActive(activeId);
             });
         });
-
-        window.addEventListener("hashchange", requestActiveUpdate);
     }
 
 
@@ -468,171 +567,177 @@
 
     /* =========================================================
        FLOATING WATER DROPLETS
+       Delayed until the browser is idle and disabled on touch devices.
     ========================================================= */
 
     const particleLayer = $(".particles");
 
+    const isTouchDevice =
+        window.matchMedia("(pointer: coarse)").matches ||
+        "ontouchstart" in window;
+
     const createParticles = () => {
+        if (!particleLayer || reducedMotion || isTouchDevice) return;
 
-        if (!particleLayer || reducedMotion) {
-            return;
-        }
+        particleLayer.replaceChildren();
 
-        particleLayer.innerHTML = "";
-
-        const count =
-            window.innerWidth < 700
-                ? 9
-                : 16;
-
-        const fragment =
-            document.createDocumentFragment();
+        const count = window.innerWidth < 900 ? 6 : 10;
+        const fragment = document.createDocumentFragment();
 
         for (let i = 0; i < count; i++) {
-
-            const particle =
-                document.createElement("span");
-
+            const particle = document.createElement("span");
             particle.className = "particle";
 
-            const size =
-                Math.random() * 6 + 3;
+            const size = Math.random() * 5 + 3;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 24 + 30;
+            const delay = Math.random() * 25;
+            const opacity = Math.random() * 0.08 + 0.06;
+            const drift = Math.random() * 6 - 3;
 
-            const left =
-                Math.random() * 100;
+            particle.style.cssText =
+                `width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;` +
+                `left:${left.toFixed(2)}%;animation-duration:${duration.toFixed(1)}s;` +
+                `animation-delay:-${delay.toFixed(1)}s;`;
 
-            const duration =
-                Math.random() * 24 + 26;
-
-            const delay =
-                Math.random() * 20;
-
-            const opacity =
-                Math.random() * 0.12 + 0.08;
-
-            const drift =
-                Math.random() * 8 - 4;
-
-            particle.style.width =
-                `${size.toFixed(1)}px`;
-
-            particle.style.height =
-                `${size.toFixed(1)}px`;
-
-            particle.style.left =
-                `${left.toFixed(2)}%`;
-
-            particle.style.animationDuration =
-                `${duration.toFixed(1)}s`;
-
-            particle.style.animationDelay =
-                `-${delay.toFixed(1)}s`;
-
-            particle.style.setProperty(
-                "--p-opacity",
-                opacity.toFixed(2)
-            );
-
-            particle.style.setProperty(
-                "--p-drift",
-                `${drift.toFixed(2)}vw`
-            );
-
+            particle.style.setProperty("--p-opacity", opacity.toFixed(2));
+            particle.style.setProperty("--p-drift", `${drift.toFixed(2)}vw`);
             fragment.appendChild(particle);
         }
 
         particleLayer.appendChild(fragment);
     };
 
-    createParticles();
+    const idleSchedule = window.requestIdleCallback ||
+        ((callback) => window.setTimeout(callback, 900));
 
-
-    let mobileState = window.innerWidth < 700;
-    let resizeTimer;
-
-    window.addEventListener("resize", () => {
-
-        window.clearTimeout(resizeTimer);
-
-        resizeTimer = window.setTimeout(() => {
-
-            const nextMobile =
-                window.innerWidth < 700;
-
-            if (nextMobile !== mobileState) {
-                mobileState = nextMobile;
-                createParticles();
-            }
-
-        }, 250);
-
-    });
+    if (!reducedMotion && !isTouchDevice) {
+        idleSchedule(createParticles, { timeout: 1800 });
+    }
 
 
     /* =========================================================
        LIQUID HIGHLIGHT
-       Smooth cursor-following water reflection.
+       Pure CSS handles the highlight. No pointermove listeners are used,
+       which removes a frequent source of main-thread work while scrolling.
     ========================================================= */
 
-    if (!reducedMotion) {
-
-        const liquidItems = $$(".liquid");
-
-        liquidItems.forEach((element) => {
-
-            let frame = null;
-
-            const updatePosition = (event) => {
-
-                if (frame) {
-                    return;
-                }
-
-                frame = window.requestAnimationFrame(() => {
-
-                    const rect =
-                        element.getBoundingClientRect();
-
-                    const x =
-                        ((event.clientX - rect.left) /
-                            rect.width) *
-                        100;
-
-                    const y =
-                        ((event.clientY - rect.top) /
-                            rect.height) *
-                        100;
-
-                    element.style.setProperty(
-                        "--mx",
-                        `${Math.max(0, Math.min(100, x))}%`
-                    );
-
-                    element.style.setProperty(
-                        "--my",
-                        `${Math.max(0, Math.min(100, y))}%`
-                    );
-
-                    frame = null;
-                });
-            };
 
 
-            element.addEventListener(
-                "pointermove",
-                updatePosition,
-                { passive: true }
+    /* =========================================================
+       PREMIUM LIQUID MOUSE POINTER
+       One RAF loop, transform-only movement, desktop/fine pointer.
+    ========================================================= */
+
+    if (!reducedMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+
+        const pointer = document.createElement("div");
+        pointer.className = "pointer-visual";
+        pointer.setAttribute("aria-hidden", "true");
+        pointer.innerHTML = `
+            <span class="pointer-ring"></span>
+            <span class="pointer-dot"></span>
+            <span class="pointer-ripple"></span>
+        `;
+
+        document.body.appendChild(pointer);
+        document.documentElement.classList.add("has-custom-pointer");
+
+        const ring = pointer.querySelector(".pointer-ring");
+        const dot = pointer.querySelector(".pointer-dot");
+        const ripple = pointer.querySelector(".pointer-ripple");
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let ringX = mouseX;
+        let ringY = mouseY;
+        let rafId = 0;
+        let pointerActive = false;
+
+        const render = () => {
+            // The dot follows the pointer directly.
+            dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
+
+            // The ring follows with a small, smooth spring-like delay.
+            ringX += (mouseX - ringX) * 0.17;
+            ringY += (mouseY - ringY) * 0.17;
+
+            ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate3d(-50%, -50%, 0)`;
+            ripple.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
+
+            if (pointerActive) {
+                rafId = window.requestAnimationFrame(render);
+            } else {
+                rafId = 0;
+            }
+        };
+
+        const wake = () => {
+            if (!pointerActive) {
+                pointerActive = true;
+                pointer.classList.add("visible");
+            }
+
+            if (!rafId) {
+                rafId = window.requestAnimationFrame(render);
+            }
+        };
+
+        document.addEventListener("pointermove", (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+            wake();
+        }, { passive: true });
+
+        document.addEventListener("pointerenter", (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+            wake();
+        }, { passive: true });
+
+        document.addEventListener("pointerover", (event) => {
+            const interactive = event.target.closest(
+                "a, button, input, textarea, select, .liquid, .project-card, .skill-card, .experience-card"
             );
 
+            if (interactive) {
+                pointer.classList.add("pointer-hover");
+            }
+        }, { passive: true });
 
-            element.addEventListener(
-                "pointerenter",
-                updatePosition,
-                { passive: true }
+        document.addEventListener("pointerout", (event) => {
+            const from = event.target.closest(
+                "a, button, input, textarea, select, .liquid, .project-card, .skill-card, .experience-card"
             );
 
+            if (!from) return;
+
+            const to = event.relatedTarget;
+            if (to && from.contains(to)) return;
+
+            pointer.classList.remove("pointer-hover");
+        }, { passive: true });
+
+        document.addEventListener("pointerdown", () => {
+            pointer.classList.add("clicking");
+
+            ripple.classList.remove("play");
+            void ripple.offsetWidth;
+            ripple.classList.add("play");
+        }, { passive: true });
+
+        document.addEventListener("pointerup", () => {
+            pointer.classList.remove("clicking");
+        }, { passive: true });
+
+        window.addEventListener("blur", () => {
+            pointer.classList.remove("visible", "pointer-hover", "clicking");
+            pointerActive = false;
+            if (rafId) {
+                window.cancelAnimationFrame(rafId);
+                rafId = 0;
+            }
         });
-
     }
 
 
@@ -886,10 +991,11 @@ if (form && note) {
     const reportSheetTabs = $('#reportSheetTabs');
     const reportStatus = $('#reportStatus');
 
-    const reportData = Array.isArray(window.ECO_SHOP_REPORT)
+    let reportData = Array.isArray(window.ECO_SHOP_REPORT)
         ? window.ECO_SHOP_REPORT
         : [];
 
+    let reportDataPromise = null;
     let activeReportSheet = 0;
     let reportLastFocused = null;
 
@@ -1075,8 +1181,65 @@ if (form && note) {
         });
     };
 
-    const loadReport = () => {
+    const loadReportData = () => {
+        if (reportData.length) return Promise.resolve(reportData);
+
+        if (reportDataPromise) return reportDataPromise;
+
+        reportDataPromise = new Promise((resolve, reject) => {
+            const existing = document.querySelector('script[data-report-data]');
+
+            if (existing) {
+                existing.addEventListener('load', () => resolve(window.ECO_SHOP_REPORT || []), { once: true });
+                existing.addEventListener('error', reject, { once: true });
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = 'report-data.js';
+            script.dataset.reportData = 'true';
+            script.async = true;
+
+            script.onload = () => {
+                reportData = Array.isArray(window.ECO_SHOP_REPORT)
+                    ? window.ECO_SHOP_REPORT
+                    : [];
+                resolve(reportData);
+            };
+
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
+
+        return reportDataPromise;
+    };
+
+    const loadReport = async () => {
         if (!reportTableWrap) return;
+
+        if (!reportData.length) {
+            reportTableWrap.innerHTML = `
+                <div class="report-loading">
+                    <span class="report-spinner" aria-hidden="true"></span>
+                    Preparing Excel report…
+                </div>
+            `;
+
+            setReportStatus('Loading report…');
+
+            try {
+                await loadReportData();
+            } catch (error) {
+                reportTableWrap.innerHTML = `
+                    <div class="report-error">
+                        <strong>Report preview is unavailable.</strong>
+                        <p>Please use the Download Excel button below.</p>
+                    </div>
+                `;
+                setReportStatus('Preview unavailable');
+                return;
+            }
+        }
 
         if (!reportData.length) {
             reportTableWrap.innerHTML = `
@@ -1140,3 +1303,4 @@ if (form && note) {
 
 
 })();
+

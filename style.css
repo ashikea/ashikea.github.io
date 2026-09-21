@@ -2512,7 +2512,7 @@ body,
     z-index: 4;
 }
 
-.theme-toggle:hover { transform: translateY(-2px); }
+.theme-toggle:hover { transform: translateY(-2px);  }
 .theme-toggle:active { transform: scale(.96); }
 
 .theme-icon {
@@ -3750,4 +3750,1690 @@ body.report-viewer-open{
 .report-status,
 .report-download{
     line-height:1.2;
+}
+
+
+/* =========================================================
+   MOBILE RENDERING OPTIMIZATION
+========================================================= */
+
+@media (max-width: 700px) {
+    .section:not(.hero) {
+        content-visibility: auto;
+        contain-intrinsic-size: 760px;
+    }
+
+    .project-card,
+    .skill-card,
+    .about-card,
+    .experience-card,
+    .contact-card,
+    .edu-card,
+    .cert-card {
+        -webkit-backdrop-filter: blur(10px) saturate(130%);
+        backdrop-filter: blur(10px) saturate(130%);
+    }
+}
+
+
+/* =========================================================
+   PERFORMANCE OPTIMIZATION LAYER
+   Keeps the burgundy liquid look while reducing paint/composite
+   work on phones and lower-powered devices.
+========================================================= */
+
+/* Avoid expensive full-page fixed background repainting. The
+   decorative layer is isolated and the content is allowed to scroll
+   independently. */
+.bg-layer {
+    contain: strict;
+    transform: translateZ(0);
+}
+
+/* Reduce animated blur cost on desktop without removing the effect. */
+.blob {
+    filter: blur(42px);
+    opacity: .38;
+}
+
+.blob-1 { animation-duration: 50s; }
+.blob-2 { animation-duration: 60s; }
+.blob-3 { animation-duration: 70s; }
+
+.liquid-wave {
+    opacity: .22;
+}
+
+/* Use a lighter glass blur for the large repeated surfaces. */
+.about-card,
+.skill-card,
+.project-card,
+.experience-card,
+.contact-card,
+.edu-card,
+.cert-card {
+    -webkit-backdrop-filter: blur(9px) saturate(125%);
+    backdrop-filter: blur(9px) saturate(125%);
+}
+
+.nav,
+.theme-toggle {
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+    backdrop-filter: blur(12px) saturate(130%);
+}
+
+/* Render below-the-fold sections only when approaching the viewport. */
+main > section:not(#home) {
+    content-visibility: auto;
+    contain-intrinsic-size: 720px;
+}
+
+/* Scroll reveal no longer animates filter/blur. */
+.reveal {
+    filter: none !important;
+    will-change: opacity, transform;
+    transition:
+        opacity .52s var(--ease) var(--rd, 0s),
+        transform .52s var(--ease) var(--rd, 0s);
+}
+
+/* Keep surfaces clean: no bright white spotlight on hover. */
+.liquid::after {
+    display: none !important;
+}
+
+/* Do not promote every tag/card into its own layer. */
+.particle,
+.profile-liquid,
+.nav-indicator {
+    will-change: transform;
+}
+
+/* Prevent hover-only visual work from being triggered on touch screens. */
+@media (hover: none), (pointer: coarse) {
+    .liquid::after,
+    .profile-shine {
+        display: none !important;
+    }
+
+    .project-card:hover,
+    .skill-card:hover,
+    .experience-card:hover,
+    .about-card:hover,
+    .contact-card:hover,
+    .edu-card:hover,
+    .cert-card:hover {
+        transform: none;
+    }
+}
+
+/* =========================================================
+   MOBILE PERFORMANCE MODE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    html {
+        scroll-padding-top: 82px;
+    }
+
+    .bg-layer {
+        contain: strict;
+        background:
+            radial-gradient(
+                90% 48% at 12% 4%,
+                rgba(122,35,70,.17),
+                transparent 68%
+            ),
+            radial-gradient(
+                78% 54% at 92% 35%,
+                rgba(109,31,58,.12),
+                transparent 70%
+            ),
+            #fff8fa;
+    }
+
+    .bg-layer::before {
+        content: "";
+        position: absolute;
+        inset: -12%;
+        background:
+            radial-gradient(
+                circle at 30% 40%,
+                rgba(122,35,70,.08),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 72% 68%,
+                rgba(74,16,38,.06),
+                transparent 40%
+            );
+        animation: mobileAmbient 18s ease-in-out infinite alternate;
+        will-change: transform, opacity;
+    }
+
+    @keyframes mobileAmbient {
+        from {
+            transform: translate3d(-2%, -1%, 0) scale(1);
+            opacity: .78;
+        }
+        to {
+            transform: translate3d(3%, 2%, 0) scale(1.04);
+            opacity: 1;
+        }
+    }
+
+    /* Hide expensive blurred blobs/waves/particles on phones. */
+    .blob,
+    .liquid-wave,
+    .particles {
+        display: none !important;
+    }
+
+    /* Remove backdrop-filter from repeated cards on touch devices. */
+    .nav,
+    .theme-toggle,
+    .about-card,
+    .skill-card,
+    .project-card,
+    .experience-card,
+    .contact-card,
+    .contact-form,
+    .edu-card,
+    .cert-card,
+    .hero-eyebrow,
+    .hero-fact,
+    .tags span,
+    .project-tags span,
+    .btn,
+    .project-link,
+    .field input,
+    .field textarea {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+
+    .nav,
+    .about-card,
+    .skill-card,
+    .project-card,
+    .experience-card,
+    .contact-card,
+    .contact-form,
+    .edu-card,
+    .cert-card {
+        background:
+            linear-gradient(
+                145deg,
+                rgba(255,255,255,.86),
+                rgba(255,248,250,.72)
+            );
+        box-shadow:
+            0 8px 24px rgba(74,16,38,.07),
+            inset 0 1px 0 rgba(255,255,255,.96);
+    }
+
+    .section-light {
+        background: rgba(255,255,255,.18);
+    }
+
+    .profile-liquid {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        box-shadow:
+            0 12px 32px rgba(74,16,38,.14),
+            inset 0 1px 0 rgba(255,255,255,.96);
+    }
+
+    .profile-liquid::before {
+        animation-duration: 14s;
+    }
+
+    .profile-liquid:hover {
+        transform: translateY(-6px) scale(1.02);
+    }
+
+    /* Shorter reveals = less perceived delay when scrolling. */
+    .reveal,
+    .hero-profile.reveal,
+    .hero-eyebrow.reveal,
+    .hero-title.reveal,
+    .hero-role.reveal,
+    .hero-text.reveal,
+    .hero-actions.reveal,
+    .hero-facts.reveal {
+        transition-duration: .42s !important;
+        transform: translateY(18px) !important;
+    }
+
+    .reveal.in-view {
+        transform: translateY(0) !important;
+    }
+
+    .site-header.scrolled .nav {
+        box-shadow:
+            0 10px 26px rgba(74,16,38,.10),
+            inset 0 1px 0 rgba(255,255,255,.96);
+    }
+
+    .nav-indicator {
+        box-shadow:
+            0 6px 14px rgba(74,16,38,.16),
+            inset 0 1px 0 rgba(255,255,255,.18);
+    }
+}
+
+/* Very small phones: make the visual layer almost static. */
+@media (max-width: 480px) {
+    .bg-layer::before {
+        animation-duration: 28s;
+        opacity: .82;
+    }
+
+    .profile-liquid::before {
+        animation: none;
+        background: linear-gradient(
+            145deg,
+            rgba(122,35,70,.90),
+            rgba(74,16,38,.90)
+        );
+    }
+}
+
+/* Reduce expensive animations when the page is still preparing. */
+body.is-loading .bg-layer::before,
+body.is-loading .blob,
+body.is-loading .liquid-wave,
+body.is-loading .particle {
+    animation-play-state: paused !important;
+}
+
+
+/* =========================================================
+   LIGHTWEIGHT WELCOME / TESTER LOADER
+========================================================= */
+
+.page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: #fff8fa;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .42s ease, visibility .42s ease;
+}
+
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-card {
+    width: min(420px, 92vw);
+    padding: 30px 26px;
+    text-align: center;
+    border: 1px solid rgba(109,31,58,.14);
+    border-radius: 24px;
+    background: rgba(255,255,255,.82);
+    box-shadow: 0 20px 55px rgba(74,16,38,.10), inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+.tester-animation {
+    position: relative;
+    width: 240px;
+    max-width: 100%;
+    margin: 0 auto 22px;
+}
+
+.tester-screen {
+    position: relative;
+    padding: 18px;
+    border-radius: 15px;
+    text-align: left;
+    overflow: hidden;
+    color: #fdf4f7;
+    background: #3b1022;
+    box-shadow: 0 14px 30px rgba(74,16,38,.18);
+}
+
+.tester-screen-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 13px;
+}
+
+.tester-screen-bar span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.55);
+}
+
+.tester-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 25px;
+    font: 600 11px/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: rgba(255,244,248,.90);
+}
+
+.tester-line .check {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    flex: 0 0 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.44);
+}
+
+.tester-line .check::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    width: 4px;
+    height: 6px;
+    border-right: 1.5px solid #fff;
+    border-bottom: 1.5px solid #fff;
+    transform: rotate(45deg) scale(0);
+    animation: loaderCheck .9s ease forwards;
+}
+
+.line-2 .check::after { animation-delay: .25s; }
+.line-3 .check::after { animation-delay: .5s; }
+
+.tester-cursor {
+    position: absolute;
+    right: 18px;
+    bottom: 16px;
+    width: 5px;
+    height: 15px;
+    background: rgba(255,255,255,.78);
+    animation: loaderCursor .8s steps(1) infinite;
+}
+
+.tester-badge {
+    position: absolute;
+    right: -12px;
+    bottom: -12px;
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: center;
+    gap: 1px;
+    border: 3px solid rgba(255,255,255,.92);
+    border-radius: 50%;
+    color: #fff;
+    background: #7a2346;
+    font: 800 12px/1 var(--font-body);
+    box-shadow: 0 10px 22px rgba(74,16,38,.18);
+}
+
+.tester-radar {
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.34);
+    animation: loaderRadar 1.6s ease-out infinite;
+}
+
+.loader-kicker {
+    margin: 0 0 6px;
+    color: var(--burgundy);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.loader-title {
+    margin: 0 0 5px;
+    font-size: 2rem;
+}
+
+.loader-title span {
+    color: var(--burgundy-2);
+}
+
+.loader-subtitle {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: .82rem;
+}
+
+.loader-progress {
+    width: min(280px, 100%);
+    height: 4px;
+    margin: 20px auto 0;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(109,31,58,.10);
+}
+
+.loader-progress span {
+    display: block;
+    width: 38%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #4a1026, #9b315b);
+    animation: loaderProgress 1.15s ease-in-out infinite;
+}
+
+@keyframes loaderProgress {
+    0% { transform: translateX(-135%); }
+    55%,100% { transform: translateX(370%); }
+}
+
+@keyframes loaderCheck {
+    to { transform: rotate(45deg) scale(1); }
+}
+
+@keyframes loaderCursor {
+    0%,49% { opacity: 1; }
+    50%,100% { opacity: 0; }
+}
+
+@keyframes loaderRadar {
+    0% { transform: scale(.72); opacity: .75; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+@media (max-width: 480px) {
+    .page-loader { padding: 16px; }
+    .loader-card { padding: 24px 19px; }
+    .tester-animation { width: 220px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .page-loader,
+    .loader-progress span,
+    .tester-line .check::after,
+    .tester-cursor,
+    .tester-radar {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Final touch-device performance rules. */
+@media (hover: none), (pointer: coarse) {
+    .btn:hover,
+    .project-link:hover,
+    .hero-fact:hover,
+    .tags span:hover,
+    .project-tags span:hover {
+        transform: none;
+    }
+}
+
+
+/* =========================================================
+   FINAL THEME CONTROL — DESKTOP + MOBILE
+   Keep these rules last so the theme cannot be overridden by
+   earlier liquid/desktop/mobile declarations.
+========================================================= */
+
+html {
+    background: var(--off-white);
+    transition: background-color .5s ease;
+}
+
+html,
+body,
+.site-header,
+.nav,
+.nav-list,
+.section,
+.section-light,
+.about-card,
+.experience-card,
+.skill-card,
+.project-card,
+.edu-card,
+.cert-card,
+.contact-card,
+.contact-form,
+.field input,
+.field textarea,
+.site-footer,
+.theme-toggle {
+    transition:
+        background-color .5s var(--ease-soft),
+        background-image .5s var(--ease-soft),
+        color .5s var(--ease-soft),
+        border-color .5s var(--ease-soft),
+        box-shadow .5s var(--ease-soft);
+}
+
+/* DAY */
+:root[data-theme="light"] {
+    color-scheme: light;
+    --off-white: #fffafc;
+    --soft: #f7f1f4;
+    --ink: #2b1420;
+    --ink-soft: #5b4650;
+    --burgundy: #7a2346;
+    --burgundy-2: #9b315b;
+    --burgundy-dark: #4a1026;
+    --burgundy-deep: #33091a;
+}
+
+:root[data-theme="light"] body {
+    color: #5b4650;
+    background-color: #fffafc;
+}
+
+:root[data-theme="light"] .bg-layer {
+    background:
+        linear-gradient(125deg, #fffafc 0%, #fffdfd 46%, #f9f0f4 100%);
+}
+
+:root[data-theme="light"] .nav {
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.88), rgba(255,248,250,.68));
+}
+
+/* NIGHT */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --off-white: #090608;
+    --soft: #120b0f;
+    --ink: #f9edf2;
+    --ink-soft: #dccbd2;
+    --burgundy: #d4779b;
+    --burgundy-2: #e995b5;
+    --burgundy-dark: #f4c0d1;
+    --burgundy-deep: #8f2f55;
+}
+
+:root[data-theme="dark"] html,
+:root[data-theme="dark"] body {
+    background-color: #090608 !important;
+}
+
+:root[data-theme="dark"] body {
+    color: #dccbd2 !important;
+}
+
+:root[data-theme="dark"] .bg-layer {
+    background:
+        radial-gradient(circle at 15% 15%, rgba(122,35,70,.18), transparent 30%),
+        radial-gradient(circle at 86% 35%, rgba(201,93,132,.12), transparent 32%),
+        linear-gradient(135deg, #090608 0%, #10090d 52%, #180b12 100%) !important;
+}
+
+:root[data-theme="dark"] .site-header {
+    background: rgba(9,6,8,.58) !important;
+    border-bottom-color: rgba(201,93,132,.12) !important;
+}
+
+:root[data-theme="dark"] .nav,
+:root[data-theme="dark"] .site-header.scrolled .nav {
+    background: linear-gradient(
+        145deg,
+        rgba(31,16,23,.94),
+        rgba(18,10,14,.90)
+    ) !important;
+    border-color: rgba(201,93,132,.30) !important;
+    box-shadow:
+        0 14px 40px rgba(0,0,0,.42),
+        inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+:root[data-theme="dark"] .nav-brand,
+:root[data-theme="dark"] .nav-link,
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] .hero-role,
+:root[data-theme="dark"] .section-heading h2 {
+    color: #f4c0d1 !important;
+}
+
+:root[data-theme="dark"] .nav-link:not(.active):hover {
+    color: #ffd3e2 !important;
+}
+
+:root[data-theme="dark"] .nav-link.active,
+:root[data-theme="dark"] .nav-link.active:hover {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] .hero-text,
+:root[data-theme="dark"] .about-card p,
+:root[data-theme="dark"] .exp-text,
+:root[data-theme="dark"] .project-card p,
+:root[data-theme="dark"] .edu-card p,
+:root[data-theme="dark"] .cert-card p,
+:root[data-theme="dark"] .contact-card > p,
+:root[data-theme="dark"] .experience-card li,
+:root[data-theme="dark"] .manual-testing li {
+    color: #dccbd2 !important;
+}
+
+:root[data-theme="dark"] .section-light {
+    background: rgba(18,10,14,.66) !important;
+}
+
+:root[data-theme="dark"] .about-card,
+:root[data-theme="dark"] .experience-card,
+:root[data-theme="dark"] .skill-card,
+:root[data-theme="dark"] .project-card,
+:root[data-theme="dark"] .edu-card,
+:root[data-theme="dark"] .cert-card,
+:root[data-theme="dark"] .contact-card,
+:root[data-theme="dark"] .contact-form {
+    background: linear-gradient(
+        145deg,
+        rgba(31,16,23,.88),
+        rgba(18,10,14,.80)
+    ) !important;
+    border-color: rgba(201,93,132,.24) !important;
+    box-shadow:
+        0 16px 42px rgba(0,0,0,.38),
+        inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+
+:root[data-theme="dark"] .tags span,
+:root[data-theme="dark"] .hero-fact,
+:root[data-theme="dark"] .status,
+:root[data-theme="dark"] .project-category,
+:root[data-theme="dark"] .project-tags span,
+:root[data-theme="dark"] .edu-year,
+:root[data-theme="dark"] .cert-year {
+    background: rgba(201,93,132,.08) !important;
+    border-color: rgba(201,93,132,.24) !important;
+    color: #f0d8e1 !important;
+}
+
+:root[data-theme="dark"] .info-list span,
+:root[data-theme="dark"] .exp-date,
+:root[data-theme="dark"] .footer-text,
+:root[data-theme="dark"] .contact-list span {
+    color: #aa8e9a !important;
+}
+
+:root[data-theme="dark"] .info-list strong,
+:root[data-theme="dark"] .exp-company,
+:root[data-theme="dark"] .project-card h4,
+:root[data-theme="dark"] .edu-card h4,
+:root[data-theme="dark"] .cert-card h4,
+:root[data-theme="dark"] .contact-list a,
+:root[data-theme="dark"] .project-link,
+:root[data-theme="dark"] .accent {
+    color: #e995b5 !important;
+}
+
+:root[data-theme="dark"] .field input,
+:root[data-theme="dark"] .field textarea {
+    color: #fff2f6 !important;
+    background: rgba(9,6,8,.70) !important;
+    border-color: rgba(201,93,132,.25) !important;
+}
+
+:root[data-theme="dark"] .field input::placeholder,
+:root[data-theme="dark"] .field textarea::placeholder {
+    color: #947682 !important;
+}
+
+:root[data-theme="dark"] .site-footer {
+    background: #080507 !important;
+    border-top-color: rgba(201,93,132,.18) !important;
+}
+
+/* Theme button must visibly change on desktop as well. */
+.theme-toggle {
+    position: relative;
+    z-index: 20;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root[data-theme="light"] .theme-toggle {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #6d1f3a, #7a2346, #5a1731) !important;
+    border-color: #6d1f3a !important;
+}
+
+:root[data-theme="light"] .theme-toggle .theme-icon,
+:root[data-theme="light"] .theme-toggle .theme-label {
+    color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .theme-toggle {
+    color: #ffd9e6 !important;
+    background: linear-gradient(135deg, #210912, #4a1228, #260b16) !important;
+    border-color: #9b3b61 !important;
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.42),
+        inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+:root[data-theme="dark"] .theme-toggle .theme-icon,
+:root[data-theme="dark"] .theme-toggle .theme-label {
+    color: #ffd9e6 !important;
+}
+
+/* Smoothly reveal the selected sun/moon icon. */
+.theme-sun,
+.theme-moon {
+    transition: opacity .35s ease, transform .35s ease;
+}
+
+:root[data-theme="light"] .theme-sun {
+    display: inline-grid;
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+:root[data-theme="light"] .theme-moon {
+    display: none;
+    opacity: 0;
+    transform: rotate(-30deg) scale(.8);
+}
+
+:root[data-theme="dark"] .theme-sun {
+    display: none;
+    opacity: 0;
+    transform: rotate(30deg) scale(.8);
+}
+
+:root[data-theme="dark"] .theme-moon {
+    display: inline-grid;
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* Theme switch cross-fade — never blocks clicks or scrolling. */
+:root.theme-changing::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background: rgba(109,31,58,.035);
+    animation: themeFlash .45s ease-out forwards;
+}
+
+@keyframes themeFlash {
+    0% { opacity: .8; }
+    100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html,
+    body,
+    .site-header,
+    .nav,
+    .nav-list,
+    .section,
+    .section-light,
+    .about-card,
+    .experience-card,
+    .skill-card,
+    .project-card,
+    .edu-card,
+    .cert-card,
+    .contact-card,
+    .contact-form,
+    .field input,
+    .field textarea,
+    .site-footer,
+    .theme-toggle,
+    .theme-icon {
+        transition: none !important;
+    }
+
+    :root.theme-changing::before {
+        animation: none !important;
+        display: none !important;
+    }
+}
+
+
+/* =========================================================
+   LOADER THEME SYNC
+   The loader automatically follows the theme selected by the
+   visitor because the saved data-theme is applied before CSS.
+========================================================= */
+.page-loader{
+    color:var(--ink);
+    background:
+        radial-gradient(circle at 20% 20%, rgba(122,35,70,.10), transparent 35%),
+        radial-gradient(circle at 80% 80%, rgba(109,31,58,.08), transparent 35%),
+        var(--off-white);
+}
+
+.loader-card{
+    color:var(--ink);
+    background:
+        linear-gradient(145deg,
+            rgba(255,255,255,.76),
+            rgba(255,248,250,.48));
+    border-color:rgba(255,255,255,.78);
+    box-shadow:
+        0 24px 70px rgba(74,16,38,.12),
+        inset 0 1px 0 rgba(255,255,255,.95);
+    transition:
+        background .5s var(--ease-soft),
+        border-color .5s var(--ease-soft),
+        box-shadow .5s var(--ease-soft),
+        color .5s var(--ease-soft);
+}
+
+.tester-screen{
+    background:
+        linear-gradient(145deg,
+            rgba(74,16,38,.98),
+            rgba(51,9,26,.98));
+    transition:background .5s var(--ease-soft), box-shadow .5s var(--ease-soft);
+}
+
+.loader-kicker,
+.loader-title,
+.loader-subtitle{
+    transition:color .5s var(--ease-soft);
+}
+
+.loader-progress{
+    background:rgba(109,31,58,.12);
+}
+
+.loader-progress span{
+    background:linear-gradient(90deg,#4a1026,#9b315b,#d4779b);
+}
+
+:root[data-theme="dark"] .page-loader{
+    background:
+        radial-gradient(circle at 18% 18%, rgba(122,35,70,.22), transparent 34%),
+        radial-gradient(circle at 82% 82%, rgba(201,93,132,.14), transparent 36%),
+        #090608;
+}
+
+:root[data-theme="dark"] .loader-card{
+    background:
+        linear-gradient(145deg,
+            rgba(33,18,25,.92),
+            rgba(15,9,12,.88));
+    border-color:rgba(201,93,132,.25);
+    box-shadow:
+        0 28px 80px rgba(0,0,0,.46),
+        inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+:root[data-theme="dark"] .tester-screen{
+    background:
+        linear-gradient(145deg,
+            #471126,
+            #250914);
+    box-shadow:0 16px 34px rgba(0,0,0,.34);
+}
+
+:root[data-theme="dark"] .loader-kicker{
+    color:#efafc8;
+}
+
+:root[data-theme="dark"] .loader-title{
+    color:#f7d9e3;
+}
+
+:root[data-theme="dark"] .loader-title span{
+    color:#e995b5;
+}
+
+:root[data-theme="dark"] .loader-subtitle{
+    color:#c7b2bb;
+}
+
+:root[data-theme="dark"] .loader-progress{
+    background:rgba(255,255,255,.09);
+}
+
+:root[data-theme="dark"] .loader-progress span{
+    background:linear-gradient(90deg,#7a2346,#d4779b,#efafc8);
+}
+
+
+
+/* =========================================================
+   PREMIUM LIQUID MOUSE POINTER
+   Desktop/fine-pointer only. Uses transforms only so it does
+   not participate in layout or cause scroll reflow.
+========================================================= */
+.pointer-visual{
+    position:fixed;
+    left:0;
+    top:0;
+    width:0;
+    height:0;
+    z-index:9999;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .28s ease;
+}
+
+.pointer-dot,
+.pointer-ring,
+.pointer-ripple{
+    position:absolute;
+    left:0;
+    top:0;
+    border-radius:50%;
+    transform:translate3d(-50%,-50%,0);
+    pointer-events:none;
+    will-change:transform, width, height, opacity;
+}
+
+.pointer-dot{
+    width:9px;
+    height:9px;
+    background:#7A2346;
+    border:2px solid #ffffff;
+    box-shadow:
+        0 0 0 1px rgba(74,16,38,.45),
+        0 4px 14px rgba(74,16,38,.22);
+    transition:
+        transform .25s var(--ease),
+        width .30s var(--ease),
+        height .30s var(--ease),
+        background .35s ease;
+}
+
+.pointer-ring{
+    width:38px;
+    height:38px;
+    border:2px solid rgba(109,31,58,.72);
+    background:transparent;
+    box-shadow:
+        0 8px 22px rgba(74,16,38,.10);
+    transition:
+        width .46s var(--ease),
+        height .46s var(--ease),
+        border-color .35s ease,
+        background .35s ease,
+        box-shadow .35s ease;
+}
+
+.pointer-ripple{
+    width:10px;
+    height:10px;
+    border:1px solid rgba(122,35,70,.48);
+    opacity:0;
+}
+
+.pointer-visual.visible{
+    opacity:1;
+}
+
+.pointer-visual.pointer-hover .pointer-ring{
+    width:52px;
+    height:52px;
+    border-color:rgba(122,35,70,.65);
+    background:rgba(255,255,255,.20);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.82),
+        0 12px 28px rgba(74,16,38,.13);
+}
+
+.pointer-visual.pointer-hover .pointer-dot{
+    width:6px;
+    height:6px;
+    background:#4A1026;
+}
+
+.pointer-visual.clicking .pointer-ring{
+    width:42px;
+    height:42px;
+}
+
+.pointer-ripple.play{
+    animation:pointerRipple .65s var(--ease) forwards;
+}
+
+@keyframes pointerRipple{
+    0%{
+        width:8px;
+        height:8px;
+        opacity:.55;
+        border-width:1px;
+        transform:translate3d(-50%,-50%,0);
+    }
+    100%{
+        width:64px;
+        height:64px;
+        opacity:0;
+        border-width:1px;
+        transform:translate3d(-50%,-50%,0);
+    }
+}
+
+:root[data-theme="dark"] .pointer-dot{
+    background:#efafc8;
+    border-color:#2a111d;
+    box-shadow:
+        0 0 0 1px rgba(239,175,200,.60),
+        0 4px 16px rgba(0,0,0,.34);
+}
+
+:root[data-theme="dark"] .pointer-ring{
+    border-color:rgba(239,175,200,.72);
+    background:transparent;
+    box-shadow:
+        0 9px 26px rgba(0,0,0,.30);
+}
+
+:root[data-theme="dark"] .pointer-visual.pointer-hover .pointer-ring{
+    border-color:rgba(239,175,200,.70);
+    background:rgba(255,255,255,.08);
+}
+
+:root[data-theme="dark"] .pointer-ripple{
+    border-color:rgba(239,175,200,.60);
+}
+
+@media (hover:hover) and (pointer:fine){
+    /* Keep the browser cursor visible as a guaranteed fallback. */
+    html.has-custom-pointer,
+    html.has-custom-pointer body,
+    html.has-custom-pointer body *{
+        cursor: auto !important;
+    }
+}
+
+@media (hover:none), (pointer:coarse){
+    .pointer-visual{
+        display:none !important;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    .pointer-visual,
+    .pointer-dot,
+    .pointer-ring,
+    .pointer-ripple{
+        display:none !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL STABILITY + PERFORMANCE PASS
+   Fixes desktop/mobile alignment while keeping the burgundy
+   liquid visual language. These rules intentionally come last.
+========================================================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* ---------------- NAV DESKTOP ---------------- */
+.nav {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+}
+
+.nav-brand {
+    min-width: 0;
+    white-space: nowrap;
+}
+
+.theme-toggle {
+    margin-left: 0;
+    justify-self: start;
+    flex-shrink: 0;
+}
+
+.nav-list {
+    justify-self: end;
+    min-width: 0;
+}
+
+/* Moving indicator is desktop-only. On small screens the active
+   link itself becomes the selected pill, which is more reliable
+   in a stacked menu. */
+.nav-indicator {
+    pointer-events: none;
+}
+
+/* Prevent hover pseudo-layers from fighting the active pill. */
+.nav-link.active::before,
+.nav-link.active:hover::before {
+    opacity: 0 !important;
+    transform: none !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* ---------------- EXPERIENCE ---------------- */
+.timeline,
+.timeline-item,
+.experience-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.exp-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 16px;
+}
+
+.exp-top > div {
+    min-width: 0;
+}
+
+.current-badge {
+    justify-self: end;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ---------------- CARD PAINT PERFORMANCE ---------------- */
+.about-card,
+.skill-card,
+.project-card,
+.experience-card,
+.contact-card,
+.edu-card,
+.cert-card,
+.contact-form {
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    backdrop-filter: blur(8px) saturate(120%);
+    will-change: auto;
+}
+
+.blob {
+    filter: blur(36px);
+    opacity: .32;
+}
+
+.liquid-wave {
+    opacity: .16;
+}
+
+/* Do not keep whole below-the-fold sections in a partially rendered
+   state: it can change section geometry and make scroll navigation
+   jump on mobile. */
+main > section {
+    content-visibility: visible !important;
+    contain: none !important;
+}
+
+/* Reveal is opacity + transform only. */
+.reveal {
+    filter: none !important;
+    will-change: opacity, transform;
+    transition:
+        opacity .45s var(--ease),
+        transform .45s var(--ease);
+}
+
+/* ---------------- LOADER ---------------- */
+body.is-loading {
+    overflow: hidden;
+}
+
+.page-loader {
+    background: var(--off-white) !important;
+    color: var(--ink) !important;
+}
+
+.loader-card {
+    width: min(400px, calc(100vw - 32px));
+    padding: 28px 24px;
+    background: rgba(255,255,255,.78);
+    border-color: rgba(109,31,58,.16);
+    box-shadow:
+        0 18px 55px rgba(74,16,38,.10),
+        inset 0 1px 0 rgba(255,255,255,.96);
+}
+
+/* ---------------- PROFILE ---------------- */
+.profile-image {
+    display: block;
+}
+
+/* ---------------- POINTER ---------------- */
+.pointer-visual {
+    contain: layout paint style;
+    pointer-events: none !important;
+}
+
+.pointer-ring {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* ---------------- MOBILE ---------------- */
+@media (max-width: 900px) {
+
+    .site-header {
+        padding: 8px 10px;
+    }
+
+    .nav {
+        width: 100%;
+        min-height: 58px;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        gap: 8px;
+        padding: 7px 8px 7px 13px;
+    }
+
+    .nav-brand {
+        justify-self: start;
+        padding: 7px 4px;
+        font-size: 1.02rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .theme-toggle {
+        position: static !important;
+        justify-self: center;
+        width: 78px !important;
+        height: 38px !important;
+        min-width: 78px;
+        margin: 0 !important;
+        padding: 0 9px !important;
+        transform: none !important;
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:active {
+        transform: none !important;
+    }
+
+    .nav-toggle {
+        display: flex;
+        justify-self: end;
+        width: 42px;
+        height: 42px;
+        margin: 0;
+    }
+
+    /* Mobile menu */
+    .nav-list {
+        left: 0;
+        right: 0;
+        top: calc(100% + 8px);
+        width: 100%;
+        max-height: min(70vh, 520px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 8px;
+        gap: 3px;
+        border-radius: 18px;
+        -webkit-backdrop-filter: blur(14px) saturate(135%);
+        backdrop-filter: blur(14px) saturate(135%);
+    }
+
+    .nav-link {
+        width: 100%;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px 14px;
+        font-size: .88rem;
+        border-radius: 12px;
+    }
+
+    .nav-link:hover {
+        transform: translateX(2px);
+    }
+
+    /* No floating indicator inside the stacked mobile menu. */
+    .nav-indicator {
+        display: none !important;
+    }
+
+    .nav-link.active,
+    .nav-link.active:hover,
+    .nav-link.active:focus-visible {
+        color: #fff !important;
+        background: linear-gradient(
+            180deg,
+            #7A2346,
+            #4A1026
+        ) !important;
+        box-shadow:
+            0 8px 18px rgba(74,16,38,.14),
+            inset 0 1px 0 rgba(255,255,255,.16);
+    }
+
+    .nav-link.active::after,
+    .nav-link.active:hover::after {
+        display: none !important;
+    }
+
+    /* Keep the current internship label inside the card. */
+    .exp-top {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .current-badge {
+        justify-self: start;
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .experience-card {
+        overflow: hidden;
+    }
+
+    .timeline::before {
+        left: 8px;
+    }
+
+    .timeline-item {
+        padding-left: 34px;
+    }
+
+    .timeline-dot {
+        left: 2px;
+    }
+
+    /* Lighter surfaces for mobile. */
+    .about-card,
+    .skill-card,
+    .project-card,
+    .experience-card,
+    .contact-card,
+    .contact-form,
+    .edu-card,
+    .cert-card {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        background: rgba(255,255,255,.78) !important;
+        box-shadow:
+            0 8px 24px rgba(74,16,38,.07),
+            inset 0 1px 0 rgba(255,255,255,.95);
+    }
+
+    .blob,
+    .liquid-wave,
+    .particles {
+        display: none !important;
+    }
+
+    .bg-layer::before {
+        animation: mobileAmbientFinal 22s ease-in-out infinite alternate;
+        will-change: transform;
+    }
+
+    @keyframes mobileAmbientFinal {
+        from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+        to   { transform: translate3d(2%, 1.5%, 0) scale(1.025); }
+    }
+
+    .profile-liquid {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+
+    .pointer-visual {
+        display: none !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .nav-brand {
+        font-size: .98rem;
+    }
+
+    .theme-toggle {
+        width: 72px !important;
+        min-width: 72px;
+        font-size: .67rem;
+    }
+
+    .theme-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 15px;
+    }
+
+    .theme-label {
+        min-width: 26px;
+    }
+
+    .nav-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav-list {
+        max-height: 66vh;
+    }
+
+    .hero-title {
+        font-size: clamp(2.9rem, 15vw, 4.4rem);
+    }
+
+    .current-badge {
+        font-size: .62rem;
+        letter-spacing: .055em;
+    }
+}
+
+/* ---------------- FINAL THEME-AWARE LOADER ---------------- */
+:root[data-theme="dark"] .page-loader {
+    background:
+        radial-gradient(circle at 20% 18%, rgba(122,35,70,.18), transparent 35%),
+        linear-gradient(135deg, #090608 0%, #10090d 55%, #180b12 100%) !important;
+}
+
+:root[data-theme="dark"] .loader-card {
+    background: rgba(23,13,18,.88) !important;
+    border-color: rgba(225,122,159,.22) !important;
+    box-shadow:
+        0 24px 70px rgba(0,0,0,.38),
+        inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+:root[data-theme="dark"] .loader-kicker {
+    color: #e17a9f !important;
+}
+
+:root[data-theme="dark"] .loader-title,
+:root[data-theme="dark"] .loader-subtitle {
+    color: #f4c0d1 !important;
+}
+
+:root[data-theme="dark"] .loader-subtitle {
+    color: #d8c3cc !important;
+}
+
+:root[data-theme="dark"] .loader-progress {
+    background: rgba(255,255,255,.08) !important;
+}
+
+:root[data-theme="dark"] .loader-progress span {
+    background: linear-gradient(90deg, #7a2346, #d4779b, #efafc8) !important;
+}
+
+/* ---------------- NO EXPENSIVE MOTION ON REDUCED MOTION ---------------- */
+@media (prefers-reduced-motion: reduce) {
+    .bg-layer::before,
+    .profile-liquid::before,
+    .loader-progress span,
+    .tester-line .check::after,
+    .tester-cursor,
+    .tester-radar,
+    .pointer-ripple.play {
+        animation: none !important;
+    }
+
+    .reveal,
+    .nav-link,
+    .btn,
+    .project-link,
+    .about-card,
+    .skill-card,
+    .project-card,
+    .experience-card,
+    .edu-card,
+    .cert-card,
+    .contact-card,
+    .contact-form,
+    .theme-toggle,
+    .nav-list {
+        transition: none !important;
+    }
+}
+
+
+/* =========================================================
+   FIXED NAVBAR — ALWAYS VISIBLE DURING SCROLL
+   The navbar is removed from normal document flow and pinned
+   to the viewport. A dynamic body offset keeps the page content
+   from hiding underneath it.
+========================================================= */
+
+:root {
+    --header-space: 94px;
+}
+
+html {
+    scroll-padding-top: calc(var(--header-space) + 12px);
+}
+
+body {
+    padding-top: var(--header-space);
+}
+
+.site-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 3000;
+    margin: 0;
+    transform: none !important;
+}
+
+.site-header .nav {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 900px) {
+    :root {
+        --header-space: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --header-space: 76px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE THEME TOGGLE — TOUCH FEEDBACK
+   Mobile devices do not have hover. Use a clear, short press
+   interaction instead, without changing the button position.
+========================================================= */
+
+.theme-toggle {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.theme-toggle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: rgba(255,255,255,.28);
+    opacity: 0;
+    transform: translate(-50%,-50%) scale(0);
+}
+
+.theme-toggle.theme-touch-active {
+    transform: scale(.94) !important;
+    box-shadow:
+        0 5px 16px rgba(74,16,38,.18),
+        inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+
+.theme-toggle.theme-touch-active::after {
+    animation: themeTouchRipple .48s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+.theme-toggle.theme-switching .theme-icon,
+.theme-toggle.theme-switching .theme-label {
+    animation: themeSwitchPop .42s cubic-bezier(.22,.61,.36,1);
+}
+
+@keyframes themeTouchRipple {
+    0% {
+        opacity: .42;
+        transform: translate(-50%,-50%) scale(.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%,-50%) scale(7);
+    }
+}
+
+@keyframes themeSwitchPop {
+    0% {
+        opacity: .55;
+        transform: translateY(2px) scale(.92);
+    }
+    55% {
+        opacity: 1;
+        transform: translateY(0) scale(1.08);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .theme-toggle:hover {
+        transform: none !important;
+        background: rgba(255,255,255,.66);
+    }
+
+    :root[data-theme="dark"] .theme-toggle:hover {
+        background: rgba(255,255,255,.09);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-toggle::after,
+    .theme-toggle.theme-switching .theme-icon,
+    .theme-toggle.theme-switching .theme-label {
+        animation: none !important;
+    }
 }

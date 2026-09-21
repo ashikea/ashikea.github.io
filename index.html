@@ -7,6 +7,25 @@
     <meta name="author" content="Ashik E A">
     <title>Ashik | Software Testing &amp; QA Engineer</title>
 
+    <!-- Apply saved theme before the stylesheet paints the page. -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem("ashik-theme");
+                var systemDark = window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches;
+                document.documentElement.setAttribute(
+                    "data-theme",
+                    saved === "dark" || saved === "light"
+                        ? saved
+                        : (systemDark ? "dark" : "light")
+                );
+            } catch (e) {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
@@ -14,7 +33,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="is-loading">
+
+    <!-- =====================================================
+         PAGE LOADER
+         Lightweight tester-themed loading screen
+    ====================================================== -->
+    <div class="page-loader" id="pageLoader" aria-hidden="false">
+        <div class="loader-card">
+            <div class="tester-animation" aria-hidden="true">
+                <div class="tester-screen">
+                    <div class="tester-screen-bar"><span></span><span></span><span></span></div>
+                    <div class="tester-line line-1"><i class="check"></i><span>Loading portfolio...</span></div>
+                    <div class="tester-line line-2"><i class="check"></i><span>Checking UI...</span></div>
+                    <div class="tester-line line-3"><i class="check"></i><span>Running tests...</span></div>
+                    <div class="tester-cursor"></div>
+                </div>
+                <div class="tester-badge"><span class="tester-radar"></span>QA</div>
+            </div>
+            <p class="loader-kicker">WELCOME VIEWER</p>
+            <h1 class="loader-title">Ashik E A<span>.</span></h1>
+            <p class="loader-subtitle">Preparing the portfolio</p>
+            <div class="loader-progress" aria-hidden="true"><span></span></div>
+        </div>
+    </div>
+
 
     <!-- Animated background -->
     <div class="bg-layer" aria-hidden="true">
@@ -82,10 +125,17 @@
 
                 <div class="profile-liquid">
 
-                    <img
-                        src="assets/images/profile.jpg"
-                        alt="Ashik E A - Software Testing / QA Engineer"
-                        class="profile-image">
+                    <picture>
+                        <source srcset="assets/images/profile.webp" type="image/webp">
+                        <img
+                            src="assets/images/profile.jpg"
+                            alt="Ashik E A - Software Testing / QA Engineer"
+                            class="profile-image"
+                            width="180"
+                            height="180"
+                            fetchpriority="high"
+                            decoding="async">
+                    </picture>
 
                     <span class="profile-shine"></span>
 
@@ -101,7 +151,7 @@
 
 
             <h1 class="hero-title reveal">
-                Ashik E A  
+                Ashik E A
             </h1>
 
 
@@ -847,7 +897,7 @@
                     class="report-modal-close"
                     id="closeReportModal"
                     aria-label="Close test report">
-                    &times;
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
@@ -873,9 +923,8 @@
         </div>
     </div>
 
-    <!-- Local report data keeps the Excel viewer working without CDN/network access. -->
-    <script src="report-data.js"></script>
-    <script src="script.js"></script>
+    <!-- Report preview data is loaded only when the Excel viewer is opened. -->
+    <script src="script.js" defer></script>
 
 </body>
 </html>
