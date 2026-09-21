@@ -872,4 +872,271 @@ if (form && note) {
 }
 
 
+    /* =====================================================
+       ECO SHOP EXCEL — IN-PAGE REPORT VIEWER
+       Uses locally generated report-data.js so the viewer works
+       on GitHub Pages and when the portfolio is opened locally.
+       The original .xlsx file remains available for download.
+    ===================================================== */
+
+    const reportOpenButton = $('#openEcoShopReport');
+    const reportModal = $('#reportModal');
+    const reportCloseButton = $('#closeReportModal');
+    const reportTableWrap = $('#reportTableWrap');
+    const reportSheetTabs = $('#reportSheetTabs');
+    const reportStatus = $('#reportStatus');
+
+    const reportData = Array.isArray(window.ECO_SHOP_REPORT)
+        ? window.ECO_SHOP_REPORT
+        : [];
+
+    let activeReportSheet = 0;
+    let reportLastFocused = null;
+
+    const setReportStatus = (message) => {
+        if (reportStatus) {
+            reportStatus.textContent = message;
+        }
+    };
+
+    const escapeText = (value) => {
+        if (value === null || value === undefined) return '';
+        return String(value);
+    };
+
+    const findHeaderIndex = (rows) => {
+        if (!Array.isArray(rows)) return 0;
+
+        const candidates = [
+            'TEST ID',
+            'BUG ID',
+            'MODULE NAME',
+            'SL NO'
+        ];
+
+        for (let i = 0; i < Math.min(rows.length, 10); i++) {
+            const values = Array.isArray(rows[i]) ? rows[i] : [];
+            const normalized = values.map(value =>
+                escapeText(value).trim().toUpperCase()
+            );
+
+            if (candidates.some(candidate => normalized.includes(candidate))) {
+                return i;
+            }
+        }
+
+        return 0;
+    };
+
+    const getColumnCount = (rows) => {
+        return Math.max(
+            1,
+            ...rows.map(row => Array.isArray(row) ? row.length : 0)
+        );
+    };
+
+    const renderMetadata = (rows, headerIndex) => {
+        if (!reportTableWrap || headerIndex <= 0) return '';
+
+        const metadataRows = rows.slice(0, headerIndex)
+            .filter(row => Array.isArray(row) && row.some(value => escapeText(value).trim() !== ''));
+
+        if (!metadataRows.length) return '';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'report-metadata';
+
+        metadataRows.forEach(row => {
+            const item = document.createElement('div');
+            item.className = 'report-metadata-row';
+
+            row.forEach((value, index) => {
+                const text = escapeText(value).trim();
+                if (!text) return;
+
+                const cell = document.createElement('span');
+                cell.textContent = text;
+                cell.className = index === 0 ? 'report-meta-primary' : 'report-meta-secondary';
+                item.appendChild(cell);
+            });
+
+            if (item.children.length) wrapper.appendChild(item);
+        });
+
+        return wrapper;
+    };
+
+    const renderReportSheet = (sheetIndex) => {
+        if (!reportTableWrap || !reportData.length) return;
+
+        const sheet = reportData[sheetIndex];
+        if (!sheet || !Array.isArray(sheet.rows)) return;
+
+        activeReportSheet = sheetIndex;
+
+        const rows = sheet.rows;
+        if (!rows.length) {
+            reportTableWrap.innerHTML = '<div class="report-error"><strong>This sheet is empty.</strong></div>';
+            setReportStatus(`${sheet.name} · Empty sheet`);
+            return;
+        }
+
+        const headerIndex = findHeaderIndex(rows);
+        const header = rows[headerIndex] || [];
+        const dataRows = rows.slice(headerIndex + 1);
+        const columnCount = getColumnCount(rows);
+
+        const container = document.createDocumentFragment();
+        const metadata = renderMetadata(rows, headerIndex);
+        if (metadata) container.appendChild(metadata);
+
+        const tableOuter = document.createElement('div');
+        tableOuter.className = 'report-table-scroll';
+
+        const table = document.createElement('table');
+        table.className = 'report-table';
+
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+
+        for (let col = 0; col < columnCount; col++) {
+            const th = document.createElement('th');
+            th.textContent = escapeText(header[col]);
+            headerRow.appendChild(th);
+        }
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+
+        dataRows.forEach(row => {
+            if (!Array.isArray(row)) return;
+
+            const tr = document.createElement('tr');
+
+            for (let col = 0; col < columnCount; col++) {
+                const td = document.createElement('td');
+                const value = escapeText(row[col]);
+                td.textContent = value;
+
+                const normalized = value.trim().toLowerCase();
+                if (normalized === 'pass') {
+                    td.classList.add('status-pass');
+                } else if (normalized === 'fail') {
+                    td.classList.add('status-fail');
+                } else if (['new', 'closed', 'open'].includes(normalized)) {
+                    td.classList.add('status-other');
+                }
+
+                tr.appendChild(td);
+            }
+
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        tableOuter.appendChild(table);
+        container.appendChild(tableOuter);
+
+        reportTableWrap.innerHTML = '';
+        reportTableWrap.appendChild(container);
+
+        const visibleRows = dataRows.filter(row =>
+            Array.isArray(row) && row.some(value => escapeText(value).trim() !== '')
+        ).length;
+
+        setReportStatus(`${sheet.name} · ${visibleRows} rows`);
+
+        $$('.report-sheet-tab', reportSheetTabs || document).forEach((tab, index) => {
+            const selected = index === sheetIndex;
+            tab.classList.toggle('active', selected);
+            tab.setAttribute('aria-selected', String(selected));
+        });
+    };
+
+    const renderReportTabs = () => {
+        if (!reportSheetTabs) return;
+
+        reportSheetTabs.innerHTML = '';
+
+        reportData.forEach((sheet, index) => {
+            const tab = document.createElement('button');
+            tab.type = 'button';
+            tab.className = 'report-sheet-tab';
+            tab.textContent = sheet.name.replace(/_/g, ' ');
+            tab.setAttribute('aria-selected', String(index === activeReportSheet));
+
+            tab.addEventListener('click', () => {
+                renderReportSheet(index);
+            });
+
+            reportSheetTabs.appendChild(tab);
+        });
+    };
+
+    const loadReport = () => {
+        if (!reportTableWrap) return;
+
+        if (!reportData.length) {
+            reportTableWrap.innerHTML = `
+                <div class="report-error">
+                    <strong>Report preview data is unavailable.</strong>
+                    <p>Please use the Download Excel button below.</p>
+                </div>
+            `;
+            setReportStatus('Preview unavailable');
+            return;
+        }
+
+        renderReportTabs();
+        renderReportSheet(activeReportSheet);
+    };
+
+    const openReport = () => {
+        if (!reportModal) return;
+
+        reportLastFocused = document.activeElement;
+        reportModal.classList.add('open');
+        reportModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('report-viewer-open');
+
+        loadReport();
+
+        window.setTimeout(() => {
+            reportCloseButton?.focus();
+        }, 40);
+    };
+
+    const closeReport = () => {
+        if (!reportModal) return;
+
+        reportModal.classList.remove('open');
+        reportModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('report-viewer-open');
+
+        if (reportLastFocused && typeof reportLastFocused.focus === 'function') {
+            reportLastFocused.focus();
+        }
+    };
+
+    if (reportOpenButton && reportModal) {
+        reportOpenButton.addEventListener('click', openReport);
+        reportCloseButton?.addEventListener('click', closeReport);
+
+        $$('.report-modal [data-close-report]').forEach(element => {
+            element.addEventListener('click', closeReport);
+        });
+
+        document.addEventListener('keydown', event => {
+            if (
+                event.key === 'Escape' &&
+                reportModal.classList.contains('open')
+            ) {
+                closeReport();
+            }
+        });
+    }
+
+
 })();

@@ -490,13 +490,14 @@
                         </div>
 
                         <div class="project-buttons">
-                            <a
-                                href="assets/docs/eco_store_test_report_ashik.xlsx"
+                            <button
+                                type="button"
                                 class="project-link"
-                                target="_blank"
-                                rel="noopener">
+                                id="openEcoShopReport"
+                                data-report-src="assets/docs/eco_store_test_report_ashik.xlsx"
+                                aria-haspopup="dialog">
                                 View Test Report
-                            </a>
+                            </button>
                         </div>
 
                     </div>
@@ -822,6 +823,59 @@
         </div>
     </footer>
 
+    <!-- ECO SHOP EXCEL REPORT VIEWER -->
+    <div
+        class="report-modal"
+        id="reportModal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reportModalTitle">
+
+        <div class="report-modal-backdrop" data-close-report></div>
+
+        <div class="report-modal-panel">
+
+            <div class="report-modal-header">
+                <div>
+                    <span class="project-category">Manual Testing Report</span>
+                    <h2 id="reportModalTitle">Eco Shop — Test Report</h2>
+                </div>
+
+                <button
+                    type="button"
+                    class="report-modal-close"
+                    id="closeReportModal"
+                    aria-label="Close test report">
+                    &times;
+                </button>
+            </div>
+
+            <div class="report-toolbar">
+                <div class="report-status" id="reportStatus">Preparing report…</div>
+                <a
+                    href="assets/docs/eco_store_test_report_ashik.xlsx"
+                    class="report-download"
+                    download>
+                    Download Excel
+                </a>
+            </div>
+
+            <div class="report-sheet-tabs" id="reportSheetTabs" aria-label="Report sheets"></div>
+
+            <div class="report-table-wrap" id="reportTableWrap">
+                <div class="report-loading">
+                    <span class="report-spinner" aria-hidden="true"></span>
+                    Loading Excel report…
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Local report data keeps the Excel viewer working without CDN/network access. -->
+    <script src="report-data.js"></script>
     <script src="script.js"></script>
+
 </body>
 </html>
