@@ -28,7 +28,7 @@
 
     if (pageLoader) {
         const startedAt = performance.now();
-        const minimumDisplay = reducedMotion ? 180 : (window.innerWidth < 768 ? 380 : 500);
+        const minimumDisplay = reducedMotion ? 3500 : 3500;
         let loaderClosed = false;
 
         const hidePageLoader = () => {
@@ -56,7 +56,7 @@
         }
 
         // Hard safety limit: the loader cannot delay the page for more than 1.6s.
-        window.setTimeout(hidePageLoader, 950);
+        window.setTimeout(hidePageLoader, 5000);
     }
 
 
