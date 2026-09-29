@@ -319,6 +319,16 @@
     };
 
 
+    const qaScrollCue = document.querySelector('.qa-scroll-cue');
+
+    if (qaScrollCue) {
+        qaScrollCue.addEventListener('click', () => {
+            const target = document.querySelector('#about');
+            scrollToTarget(target);
+        });
+    }
+
+
     $$('a[href^="#"]').forEach((link) => {
 
         link.addEventListener("click", (event) => {
