@@ -1058,8 +1058,49 @@
         </div>
     </div>
 
+    <!-- Portfolio assistant -->
+    <div class="chatbot-widget" id="portfolioChatbot">
+        <button class="chatbot-launcher" id="chatbotLauncher" type="button"
+            aria-label="Open Ashik's portfolio assistant" aria-expanded="false">
+            <span class="chatbot-launcher-icon" aria-hidden="true">✦</span>
+            <span class="chatbot-launcher-label">Ask me</span>
+        </button>
+
+        <section class="chatbot-panel" id="chatbotPanel" aria-label="Ashik's portfolio assistant" aria-hidden="true">
+            <header class="chatbot-header">
+                <div class="chatbot-avatar" aria-hidden="true">A</div>
+                <div class="chatbot-heading">
+                    <strong>Ashik's Assistant</strong>
+                    <span><i></i> Portfolio guide · Instant replies</span>
+                </div>
+                <button class="chatbot-close" id="chatbotClose" type="button" aria-label="Close chat">×</button>
+            </header>
+            <div class="chatbot-messages" id="chatbotMessages" role="log" aria-live="polite" aria-relevant="additions">
+                <div class="chatbot-message bot">
+                    <div class="chatbot-bubble">Hi! 👋 Choose a topic or ask a question:</div>
+                </div>
+            </div>
+            <div class="chatbot-quick-actions" id="chatbotQuickActions">
+                <button type="button" data-chat-question="What are Ashik's skills?">Skills</button>
+                <button type="button" data-chat-question="Tell me about Ashik's experience">Experience</button>
+                <button type="button" data-chat-question="Show me Ashik's projects">Projects</button>
+                <button type="button" data-chat-question="Tell me about Ashik's education">Education</button>
+                <button type="button" data-chat-question="Show licenses and certifications">Certifications</button>
+                <button type="button" data-chat-question="How can I contact Ashik?">Contact</button>
+            </div>
+            <form class="chatbot-form" id="chatbotForm">
+                <label class="sr-only" for="chatbotInput">Type your question</label>
+                <input id="chatbotInput" name="message" type="text" maxlength="300"
+                    placeholder="Ask something..." autocomplete="off" required>
+                <button type="submit" aria-label="Send message">➤</button>
+            </form>
+            <p class="chatbot-note">Automated portfolio assistant · Answers are based on this website</p>
+        </section>
+    </div>
+
     <!-- Report preview data is loaded only when the Excel viewer is opened. -->
     <script src="script.js" defer></script>
+    <script src="chatbot.js" defer></script>
     
 
 </body>
