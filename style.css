@@ -6481,8 +6481,11 @@ body {
 .chatbot-bubble strong { font-weight:750; }
 .chatbot-bubble em { font-style:italic; }
 .chatbot-bubble ol.chatbot-answer-list { padding-left:20px; }
-.chatbot-quick-actions { display:flex; flex-wrap:wrap; gap:7px; padding: 10px 13px 12px; }
-.chatbot-quick-actions button { border:1px solid rgba(109,31,58,.25); border-radius:999px; padding:7px 11px; color:var(--burgundy,#6D1F3A); background:transparent; font:600 .72rem inherit; cursor:pointer; }
+/* Compact chatbot quick-action buttons */
+.chatbot-quick-actions {display: flex;flex-wrap: wrap;gap: 8px;padding: 10px 16px;}
+.chatbot-quick-actions button,.quick-action-btn {padding: 8px 14px;font-size: 14px;line-height: 1.2;min-height: 36px;border-radius: 22px;}
+/* Reduce quick-action section spacing */
+.chatbot-quick-actions { margin: 0; max-height: 50px; overflow-y: auto;align-content: flex-start;}
 .chatbot-quick-actions button:hover { background:rgba(109,31,58,.08); }
 .chatbot-form { display:flex; gap:8px; padding:12px; border-top:1px solid rgba(109,31,58,.12); }
 .chatbot-form input { flex:1; min-width:0; border:1px solid rgba(109,31,58,.2); border-radius:999px; padding:11px 14px; outline:none; color:var(--ink,#2B1420); background:var(--white,#fff); font:inherit; font-size:.84rem; }
