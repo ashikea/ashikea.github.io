@@ -136,7 +136,9 @@
     }
 
     if (/^mailto:[^\s"'<>]+$/i.test(href)) {
-      return `<a href="${escapeHTML(href)}">${text}</a>`;
+      const emailAddress = href.slice("mailto:".length).split("?")[0];
+      const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailAddress)}`;
+      return `<a href="${escapeHTML(gmailCompose)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
     }
 
     try {

@@ -134,7 +134,7 @@ RESPONSE FORMATTING AND LINKS
   [About](#about), [Experience](#experience), [Skills](#skills), [Projects](#projects),
   [Education](#education), [Certifications](#certifications), [Contact](#contact).
 - When asked how to contact Ashik, always provide clickable links:
-  [Email Ashik](mailto:ashikea96@gmail.com)
+  [Email Ashik](https://mail.google.com/mail/?view=cm&fs=1&to=ashikea96%40gmail.com)
   [GitHub](https://github.com/ashikea)
   [LinkedIn](https://linkedin.com/in/ashikea96)
   [Visit Contact Section](#contact)
@@ -233,10 +233,33 @@ def chat():
         client = get_client()
         app.logger.info("Calling Groq chat completion. Model=%s", MODEL)
 
+        # Explicitly route software testing questions to general QA knowledge.
+        qa_terms = (
+            "software testing", "software test", "qa", "quality assurance",
+            "stlc", "sdlc", "test case", "test scenario", "test plan",
+            "severity", "priority", "bug life cycle", "defect life cycle",
+            "regression", "smoke testing", "sanity testing", "retesting",
+            "selenium", "webdriver", "testng", "page object", "pom",
+            "api testing", "agile", "scrum", "manual testing",
+            "automation testing", "black box", "white box", "performance testing",
+            "functional testing", "non functional", "verification", "validation",
+            "sql testing", "assertion", "locator", "waits"
+        )
+        is_qa_question = any(term in message.lower() for term in qa_terms)
+
+        routing_instruction = (
+            "ROUTING OVERRIDE: This is a SOFTWARE TESTING / QA question. Answer "
+            "directly using general QA knowledge. Never say the answer is absent "
+            "from Ashik's portfolio and never redirect the user to contact Ashik."
+            if is_qa_question else
+            "Answer portfolio questions from verified portfolio facts. Do not "
+            "mistake a general QA question for a portfolio question."
+        )
+
         completion = client.chat.completions.create(
             model=MODEL,
             messages=[
-                {"role": "system", "content": PORTFOLIO_CONTEXT},
+                {"role": "system", "content": PORTFOLIO_CONTEXT + "\\n\\n" + routing_instruction},
                 *history,
                 {"role": "user", "content": message},
             ],
