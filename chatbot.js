@@ -110,35 +110,115 @@
     return bubble;
   }
 
-  // Escape model output and allow safe clickable HTTPS links.
-  function formatAnswer(text) {
-    const escaped = String(text)
+  // Safely render a small Markdown subset. Model HTML is always escaped first.
+  const SECTION_IDS = new Set([
+    "about", "experience", "skills", "projects", "education",
+    "certifications", "contact"
+  ]);
+
+  function escapeHTML(value) {
+    return String(value)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/\n/g, "<br>");
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
 
-    return escaped.replace(
-      /(https:\/\/[^\s<]+)/g,
-      (url) => {
-        const clean = url.replace(/[),.!?]+$/, "");
-        const suffix = url.slice(clean.length);
+  function safeLink(label, destination) {
+    const text = escapeHTML(label);
+    const href = String(destination || "").trim();
 
-        let safeUrl;
+    if (/^#[a-z0-9_-]+$/i.test(href)) {
+      const section = href.slice(1);
+      if (!SECTION_IDS.has(section)) return text;
+      return `<a href="#${section}" data-chat-nav="${section}">${text}</a>`;
+    }
 
-        try {
-          safeUrl = new URL(clean);
+    if (/^mailto:[^\s"'<>]+$/i.test(href)) {
+      return `<a href="${escapeHTML(href)}">${text}</a>`;
+    }
 
-          if (safeUrl.protocol !== "https:") {
-            return url;
-          }
-        } catch {
-          return url;
-        }
+    try {
+      const parsed = new URL(href);
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return text;
+      return `<a href="${escapeHTML(parsed.href)}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+    } catch {
+      return text;
+    }
+  }
 
-        return `<a href="${safeUrl.href}" target="_blank" rel="noopener noreferrer">${clean}</a>${suffix}`;
+  function formatInline(text) {
+    let output = escapeHTML(text);
+
+    // Markdown links: [label](https://...), [label](mailto:...), or [label](#section)
+    output = output.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, label, destination) => {
+      // Values are escaped before parsing; decode only the basic entities in destinations.
+      const decodedDestination = destination
+        .replace(/&amp;/g, "&")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+      return safeLink(label.replace(/&amp;/g, "&"), decodedDestination);
+    });
+
+    // Bold and italic formatting.
+    output = output.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    output = output.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+
+    // Linkify remaining plain web URLs, without touching generated anchors.
+    output = output.replace(/(?<!["'=])\bhttps?:\/\/[^\s<]+/g, (rawUrl) => {
+      const clean = rawUrl.replace(/[),.!?]+$/, "");
+      const suffix = rawUrl.slice(clean.length);
+      return safeLink(clean, clean) + suffix;
+    });
+    return output;
+  }
+
+  function formatAnswer(markdown) {
+    const lines = String(markdown).replace(/\r\n?/g, "\n").split("\n");
+    const blocks = [];
+    let paragraph = [];
+    let list = [];
+    let listType = "";
+
+    const flushParagraph = () => {
+      if (paragraph.length) {
+        blocks.push(`<p>${paragraph.map(formatInline).join("<br>")}</p>`);
+        paragraph = [];
       }
-    );
+    };
+    const flushList = () => {
+      if (!list.length) return;
+      const tag = listType === "ol" ? "ol" : "ul";
+      blocks.push(`<${tag} class="chatbot-answer-list">${list.map(item => `<li>${formatInline(item)}</li>`).join("")}</${tag}>`);
+      list = [];
+      listType = "";
+    };
+
+    for (const line of lines) {
+      const heading = line.match(/^\s{0,3}(#{1,3})\s+(.+)$/);
+      const bullet = line.match(/^\s*[-*•]\s+(.+)$/);
+      const numbered = line.match(/^\s*\d+[.)]\s+(.+)$/);
+
+      if (!line.trim()) {
+        flushParagraph(); flushList();
+      } else if (heading) {
+        flushParagraph(); flushList();
+        const level = Math.min(heading[1].length + 2, 4);
+        blocks.push(`<h${level}>${formatInline(heading[2])}</h${level}>`);
+      } else if (bullet || numbered) {
+        flushParagraph();
+        const type = numbered ? "ol" : "ul";
+        if (list.length && listType !== type) flushList();
+        listType = type;
+        list.push((bullet || numbered)[1]);
+      } else {
+        flushList();
+        paragraph.push(line);
+      }
+    }
+    flushParagraph(); flushList();
+    return blocks.join("") || "<p></p>";
   }
 
   // Enable or disable chatbot controls.
