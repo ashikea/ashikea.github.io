@@ -34,10 +34,7 @@
   let busy = false;
 
   // Create internal navigation links.
-  const sectionLink = (label, id) =>
-    `<a href="#${id}" data-chat-nav="${id}">${label}</a>`;
-
-  // Show chatbot only after the page loader disappears.
+    // Show chatbot only after the page loader disappears.
   function revealChatbotAfterLoader() {
     const loader = document.getElementById("pageLoader");
 
@@ -209,9 +206,9 @@
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(
-          data.error || `Request failed (${response.status})`
-        );
+        const detail = data.error || `Request failed (${response.status})`;
+        const code = data.code ? ` [${data.code}]` : "";
+        throw new Error(`${detail}${code}`);
       }
 
       if (!data.reply) {
