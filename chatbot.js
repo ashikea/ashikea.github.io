@@ -13,7 +13,7 @@
   const quickActions = document.getElementById("chatbotQuickActions");
 
   // Set this to your deployed backend URL after deploying the /backend folder.
-  const API_URL = "https://YOUR-BACKEND-NAME.onrender.com/api/chat";
+  const API_URL = "https://ashik-portfolio-ai.onrender.com/api/chat";
   const conversation = [];
   const MAX_HISTORY = 12;
 
