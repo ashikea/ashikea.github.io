@@ -6404,7 +6404,47 @@ body {
 /* =========================================================
    PORTFOLIO CHAT ASSISTANT — lightweight, responsive widget
 ========================================================= */
-.chatbot-widget { position: fixed; right: 24px; bottom: 24px; z-index: 10050; font-family: inherit; }
+/* Hide chatbot until page loader finishes */
+.chatbot-widget {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 10050;
+    font-family: inherit;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(14px) scale(0.97);
+}
+
+/* Show chatbot after page loader */
+.chatbot-widget.is-ready {
+    visibility: visible;
+    pointer-events: auto;
+    animation: chatbotLauncherReveal 0.55s ease forwards;
+}
+
+@keyframes chatbotLauncherReveal {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .chatbot-widget.is-ready {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
 .chatbot-launcher {
     display:flex; align-items:center; gap:10px; border:0; border-radius:999px;
     padding:12px 18px; color:#fff; background:linear-gradient(135deg,#7A2346,#4A1026);
@@ -6465,3 +6505,12 @@ html[data-theme="dark"] .chatbot-note, body[data-theme="dark"] .chatbot-note { c
 @media (prefers-reduced-motion:reduce) {
  .chatbot-panel,.chatbot-launcher { transition:none; }
 }
+
+/* Groq assistant response indicator */
+.chatbot-typing { display:inline-flex; align-items:center; gap:4px; min-width:38px; }
+.chatbot-typing i { width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.45; animation:chatTyping 1s ease-in-out infinite; }
+.chatbot-typing i:nth-child(2) { animation-delay:.15s; }
+.chatbot-typing i:nth-child(3) { animation-delay:.3s; }
+.chatbot-form button:disabled,.chatbot-quick-actions button:disabled { opacity:.55; cursor:wait; }
+@keyframes chatTyping { 0%,60%,100% { transform:translateY(0); opacity:.4; } 30% { transform:translateY(-4px); opacity:1; } }
+@media (prefers-reduced-motion:reduce) { .chatbot-typing i { animation:none; } }
