@@ -167,6 +167,18 @@
     output = output.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
     output = output.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
 
+    // Turn literal mailto: addresses into Gmail Compose links.
+    output = output.replace(
+      /\\bmailto:([A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,})/gi,
+      (_match, email) => safeLink(email, `mailto:${email}`)
+    );
+
+    // Make plain email addresses clickable and open Gmail Compose.
+    output = output.replace(
+      /(?<![\\w"'>])([A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,})(?![\\w"' <])/gi,
+      (_match, email) => safeLink(email, `mailto:${email}`)
+    );
+
     // Linkify remaining plain web URLs, without touching generated anchors.
     output = output.replace(/(?<!["'=])\bhttps?:\/\/[^\s<]+/g, (rawUrl) => {
       const clean = rawUrl.replace(/[),.!?]+$/, "");
