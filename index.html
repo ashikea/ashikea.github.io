@@ -124,17 +124,19 @@
 
             <a href="#home" class="nav-brand">Ashik E A<span>.</span></a>
 
-            <button
-                type="button"
-                class="theme-toggle"
-                id="themeToggle"
-                aria-label="Switch to night mode"
-                aria-pressed="false"
-                title="Switch to night mode">
-                <span class="theme-icon theme-sun" aria-hidden="true">☀</span>
-                <span class="theme-icon theme-moon" aria-hidden="true">☾</span>
-                <span class="theme-label">Night</span>
-            </button>
+            <div class="theme-slider" id="themeSlider" role="group" aria-label="Appearance">
+                <span class="theme-slider-icon" aria-hidden="true">☀</span>
+                <input
+                    type="range"
+                    id="themeRange"
+                    min="0"
+                    max="1"
+                    step="1"
+                    value="0"
+                    aria-label="Appearance: light to dark"
+                    aria-valuetext="Light mode">
+                <span class="theme-slider-icon" aria-hidden="true">☾</span>
+            </div>
 
             <button
                 type="button"

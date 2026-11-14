@@ -61,13 +61,12 @@
 
 
     /* =========================================================
-       DAY / NIGHT THEME
-       Robust desktop + mobile implementation. No dependency on
-       View Transition API: the theme always switches immediately,
-       then CSS smoothly animates the visual properties.
+       LIGHT / DARK MODE SLIDER
+       The range control is keyboard, pointer and touch accessible.
     ========================================================= */
 
-    const themeToggle = $("#themeToggle");
+    const themeRange = $("#themeRange");
+    const themeSlider = $("#themeSlider");
     const root = document.documentElement;
 
     let savedTheme = null;
@@ -82,36 +81,23 @@
         : false;
 
     const applyTheme = (theme, persist = false) => {
-        const dark = theme === "dark";
-        const resolved = dark ? "dark" : "light";
+        const resolved = theme === "dark" ? "dark" : "light";
+        const dark = resolved === "dark";
 
-        // Set the theme on <html>, which is the selector used by the CSS.
         root.setAttribute("data-theme", resolved);
         root.style.colorScheme = resolved;
+
+        if (themeRange) {
+            themeRange.value = dark ? "1" : "0";
+            themeRange.setAttribute("aria-valuetext", dark ? "Dark mode" : "Light mode");
+        }
 
         if (persist) {
             try {
                 localStorage.setItem("ashik-theme", resolved);
             } catch (error) {
-                // Private browsing / blocked storage: theme still works.
+                // Theme switching still works when storage is unavailable.
             }
-        }
-
-        if (!themeToggle) return;
-
-        themeToggle.setAttribute("aria-pressed", String(dark));
-        themeToggle.setAttribute(
-            "aria-label",
-            dark ? "Switch to day mode" : "Switch to night mode"
-        );
-        themeToggle.setAttribute(
-            "title",
-            dark ? "Switch to day mode" : "Switch to night mode"
-        );
-
-        const label = $(".theme-label", themeToggle);
-        if (label) {
-            label.textContent = dark ? "Day" : "Night";
         }
     };
 
@@ -122,58 +108,29 @@
 
     applyTheme(initialTheme);
 
-    if (themeToggle) {
+    if (themeRange) {
+        let transitionTimer;
 
-        // Touch devices have no persistent hover state. Give the
-        // theme control a visible press/ripple interaction instead.
-        const startThemePress = () => {
-            themeToggle.classList.remove("theme-touch-active");
-            void themeToggle.offsetWidth;
-            themeToggle.classList.add("theme-touch-active");
-        };
+        themeRange.addEventListener("input", () => {
+            const nextTheme = Number(themeRange.value) >= 1 ? "dark" : "light";
+            const currentTheme = root.getAttribute("data-theme") || "light";
 
-        const endThemePress = () => {
-            themeToggle.classList.remove("theme-touch-active");
-        };
+            if (nextTheme === currentTheme) return;
 
-        themeToggle.addEventListener("pointerdown", startThemePress, { passive: true });
-        themeToggle.addEventListener("pointerup", endThemePress, { passive: true });
-        themeToggle.addEventListener("pointercancel", endThemePress, { passive: true });
-        themeToggle.addEventListener("pointerleave", endThemePress, { passive: true });
+            root.classList.add("theme-changing");
+            applyTheme(nextTheme, true);
 
-        themeToggle.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" || event.key === " ") {
-                startThemePress();
-            }
+            window.clearTimeout(transitionTimer);
+            transitionTimer = window.setTimeout(() => {
+                root.classList.remove("theme-changing");
+            }, 520);
         });
 
-        themeToggle.addEventListener("keyup", endThemePress);
-
-        themeToggle.addEventListener("click", (event) => {
-            event.preventDefault();
-
-            const current = root.getAttribute("data-theme") === "dark"
-                ? "dark"
-                : "light";
-
-            const next = current === "dark" ? "light" : "dark";
-
-            // Let CSS transitions handle the visual change consistently
-            // on both desktop and mobile browsers.
-            root.classList.add("theme-changing");
-            themeToggle.classList.remove("theme-switching");
-            void themeToggle.offsetWidth;
-            themeToggle.classList.add("theme-switching");
-            applyTheme(next, true);
-
-            window.setTimeout(() => {
-                root.classList.remove("theme-changing");
-                themeToggle.classList.remove("theme-switching");
-                themeToggle.classList.remove("theme-touch-active");
-            }, 500);
+        themeRange.addEventListener("change", () => {
+            const nextTheme = Number(themeRange.value) >= 1 ? "dark" : "light";
+            applyTheme(nextTheme, true);
         });
     }
-
 
     /* =========================================================
        FOOTER YEAR
@@ -575,55 +532,85 @@
     }
 
 
-    /* =========================================================
-       FLOATING WATER DROPLETS
-       Delayed until the browser is idle and disabled on touch devices.
-    ========================================================= */
+    /* =========================================
+   FLOATING WATER DROPLETS
+========================================= */
 
-    const particleLayer = $(".particles");
+const particleLayer = document.querySelector(".particles");
 
-    const isTouchDevice =
-        window.matchMedia("(pointer: coarse)").matches ||
-        "ontouchstart" in window;
+const createParticles = () => {
 
-    const createParticles = () => {
-        if (!particleLayer || reducedMotion || isTouchDevice) return;
+    if (!particleLayer) return;
 
-        particleLayer.replaceChildren();
-
-        const count = window.innerWidth < 900 ? 6 : 10;
-        const fragment = document.createDocumentFragment();
-
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement("span");
-            particle.className = "particle";
-
-            const size = Math.random() * 5 + 3;
-            const left = Math.random() * 100;
-            const duration = Math.random() * 24 + 30;
-            const delay = Math.random() * 25;
-            const opacity = Math.random() * 0.08 + 0.06;
-            const drift = Math.random() * 6 - 3;
-
-            particle.style.cssText =
-                `width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;` +
-                `left:${left.toFixed(2)}%;animation-duration:${duration.toFixed(1)}s;` +
-                `animation-delay:-${delay.toFixed(1)}s;`;
-
-            particle.style.setProperty("--p-opacity", opacity.toFixed(2));
-            particle.style.setProperty("--p-drift", `${drift.toFixed(2)}vw`);
-            fragment.appendChild(particle);
-        }
-
-        particleLayer.appendChild(fragment);
-    };
-
-    const idleSchedule = window.requestIdleCallback ||
-        ((callback) => window.setTimeout(callback, 900));
-
-    if (!reducedMotion && !isTouchDevice) {
-        idleSchedule(createParticles, { timeout: 1800 });
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
     }
+
+    particleLayer.replaceChildren();
+
+    const isMobile = window.matchMedia("(max-width: 700px)").matches;
+    const isTablet = window.matchMedia("(max-width: 1100px)").matches;
+
+    // Responsive particle count
+    const particleCount = isMobile ? 14 : isTablet ? 20 : 28;
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < particleCount; i++) {
+
+        const particle = document.createElement("span");
+
+        particle.className = "particle";
+
+        const size = isMobile
+            ? Math.random() * 2.2 + 3.2
+            : Math.random() * 3.2 + 4.2;
+
+        const left = Math.random() * 100;
+
+        const duration = Math.random() * 8 + 15;
+
+        const delay = Math.random() * duration;
+
+        const opacity = Math.random() * 0.07 + 0.09;
+
+        const drift = Math.random() * 5 - 2.5;
+
+        particle.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${left}%;
+        `;
+
+        particle.style.setProperty(
+            "--p-duration",
+            `${duration}s`
+        );
+
+        particle.style.setProperty(
+            "--p-opacity",
+            opacity
+        );
+
+        particle.style.setProperty(
+            "--p-drift",
+            `${drift}vw`
+        );
+
+        particle.style.animationDelay = `-${delay}s`;
+
+        fragment.appendChild(particle);
+    }
+
+    particleLayer.appendChild(fragment);
+};
+
+// Run after the browser has some idle time
+const scheduleParticles =
+    window.requestIdleCallback ||
+    (callback => setTimeout(callback, 900));
+
+scheduleParticles(createParticles);
 
 
     /* =========================================================
