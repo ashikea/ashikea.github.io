@@ -1915,6 +1915,7 @@ main,
         visibility: visible;
         pointer-events: auto;
         transform: translateY(0) scale(1);
+        
     }
 
     .nav-link {
@@ -6601,5 +6602,210 @@ html[data-theme="dark"] .chatbot-note, body[data-theme="dark"] .chatbot-note { c
     .theme-slider::before,
     .theme-slider-icon {
         transition: none !important;
+    }
+}
+
+
+/* =========================================================
+   NAVBAR OUTER BACKGROUND FIX
+   Keep the glass navbar visible; remove the full-width dark
+   strip behind it in both themes and while scrolling.
+========================================================= */
+.site-header,
+.site-header.scrolled,
+:root[data-theme="light"] .site-header,
+:root[data-theme="dark"] .site-header,
+:root[data-theme="light"] .site-header.scrolled,
+:root[data-theme="dark"] .site-header.scrolled {
+    background: transparent !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+/* The rounded navigation container retains its own styling. */
+.site-header .nav {
+    position: relative;
+}
+
+
+/* =========================================================
+   TRANSPARENT GLASS NAVBAR
+   Subtle transparency with background blur in both themes.
+========================================================= */
+.site-header,
+.site-header.scrolled,
+:root[data-theme="light"] .site-header,
+:root[data-theme="dark"] .site-header,
+:root[data-theme="light"] .site-header.scrolled,
+:root[data-theme="dark"] .site-header.scrolled {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.site-header .nav,
+.site-header.scrolled .nav {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(165%);
+    backdrop-filter: blur(22px) saturate(165%);
+    box-shadow: 0 8px 30px rgba(30, 20, 28, 0.10),
+                inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+}
+
+:root[data-theme="dark"] .site-header .nav,
+:root[data-theme="dark"] .site-header.scrolled .nav {
+    background: rgba(22, 14, 19, 0.30) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION - OPAQUE FROSTED GLASS
+   Keeps the desktop navbar glass effect, while making the
+   expanded mobile menu readable instead of fully transparent.
+========================================================= */
+@media (max-width: 900px) {
+    .site-header .nav-list,
+    .site-header .nav-list.open {
+        background: rgba(255, 255, 255, 0.94) !important;
+        -webkit-backdrop-filter: blur(22px) saturate(160%);
+        backdrop-filter: blur(22px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.55) !important;
+        box-shadow: 0 14px 36px rgba(30, 20, 28, 0.16) !important;
+    }
+
+    :root[data-theme="dark"] .site-header .nav-list,
+    :root[data-theme="dark"] .site-header .nav-list.open {
+        background: rgba(30, 22, 30, 0.96) !important;
+        border-color: rgba(255, 255, 255, 0.14) !important;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38) !important;
+    }
+}
+
+/* =========================================================
+   MOBILE NAVBAR - VISIBLE FROSTED GLASS
+   The desktop glass settings remain unchanged. On mobile,
+   give the outer navbar itself a stronger tint so page text
+   does not show through the brand, theme toggle and menu icon.
+========================================================= */
+@media (max-width: 900px) {
+    .site-header .nav,
+    .site-header.scrolled .nav {
+        background: rgba(255, 255, 255, 0.82) !important;
+        border: 1px solid rgba(255, 255, 255, 0.72) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(165%);
+        backdrop-filter: blur(24px) saturate(165%);
+        box-shadow:
+            0 8px 30px rgba(30, 20, 28, 0.14),
+            inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+    }
+
+    :root[data-theme="dark"] .site-header .nav,
+    :root[data-theme="dark"] .site-header.scrolled .nav {
+        background: rgba(28, 19, 25, 0.88) !important;
+        border-color: rgba(255, 255, 255, 0.18) !important;
+        box-shadow:
+            0 8px 30px rgba(0, 0, 0, 0.34),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    }
+}
+
+
+/* =========================================================
+   MOBILE NAVBAR - TRANSPARENT GLASS + ITEM SEPARATION
+   Only adjusts mobile navbar/menu transparency and separators.
+   Existing theme colours and active/selected link styling stay intact.
+========================================================= */
+@media (max-width: 900px) {
+    .site-header .nav,
+    .site-header.scrolled .nav {
+        background: rgba(255, 255, 255, 0.78) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(165%);
+        backdrop-filter: blur(24px) saturate(165%);
+    }
+
+    :root[data-theme="dark"] .site-header .nav,
+    :root[data-theme="dark"] .site-header.scrolled .nav {
+        background: rgba(28, 19, 25, 0.80) !important;
+    }
+
+    .site-header .nav-list,
+    .site-header .nav-list.open {
+        background: rgba(255, 255, 255, 0.78) !important;
+        -webkit-backdrop-filter: blur(22px) saturate(160%);
+        backdrop-filter: blur(22px) saturate(160%);
+    }
+
+    :root[data-theme="dark"] .site-header .nav-list,
+    :root[data-theme="dark"] .site-header .nav-list.open {
+        background: rgba(30, 22, 30, 0.82) !important;
+    }
+
+    /* Subtle separators; active item colours remain unchanged. */
+    .site-header .nav-list .nav-link:not(:last-child) {
+        border-bottom: 1px solid rgba(109, 31, 58, 0.16);
+    }
+
+    :root[data-theme="dark"] .site-header .nav-list .nav-link:not(:last-child) {
+        border-bottom-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .site-header .nav-list .nav-link.active {
+        border-bottom-color: transparent;
+    }
+}
+
+
+/* =========================================================
+   MOBILE MENU - CLEAR SEPARATION BETWEEN NAVIGATION ITEMS
+   Keeps the existing theme palette and active-link appearance.
+========================================================= */
+@media (max-width: 900px) {
+    .site-header .nav-list {
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    .site-header .nav-list .nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 58px;
+        padding: 14px 20px !important;
+        margin: 0 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 16px !important;
+        background: rgba(255, 255, 255, 0.035);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+        transition: background 180ms ease, border-color 180ms ease,
+                    transform 180ms ease;
+    }
+
+    :root[data-theme="dark"] .site-header .nav-list .nav-link:not(.active) {
+        border-color: rgba(255, 255, 255, 0.13) !important;
+        background: rgba(255, 255, 255, 0.035);
+    }
+
+    :root[data-theme="light"] .site-header .nav-list .nav-link:not(.active) {
+        border-color: rgba(109, 31, 58, 0.16) !important;
+        background: rgba(109, 31, 58, 0.035);
+    }
+
+    .site-header .nav-list .nav-link:not(.active):hover {
+        background: rgba(255, 255, 255, 0.075);
+        border-color: rgba(255, 255, 255, 0.22) !important;
+    }
+
+    /* Preserve the existing selected/active item fill and text colour. */
+    .site-header .nav-list .nav-link.active {
+        border: 1px solid rgba(255, 255, 255, 0.10) !important;
+        box-shadow: 0 5px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Remove the previous continuous divider treatment. */
+    .site-header .nav-list .nav-link:not(:last-child) {
+        border-bottom-width: 1px;
     }
 }
